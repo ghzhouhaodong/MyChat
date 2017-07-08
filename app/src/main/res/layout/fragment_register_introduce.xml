@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorwrite"
+    android:orientation="vertical"
+    tools:context="com.zhd.lenovo.mychat.fragments.RegisterIntroduceFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/backgroud"
+
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/back_login_two"
+            android:src="@drawable/login_new_arrow"
+            android:layout_marginLeft="5dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="注册"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorwrite"
+            android:layout_marginRight="10dp"
+            />
+    </RelativeLayout>
+
+   <LinearLayout
+       android:layout_marginTop="30dp"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:paddingLeft="@dimen/activity_horizontal_margin"
+       android:paddingRight="@dimen/activity_horizontal_margin"
+       >
+
+       <EditText
+          android:hint="一句话描述一下自己"
+           android:id="@+id/jianjie_context"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+
+           />
+
+   </LinearLayout>
+
+   <LinearLayout
+       android:layout_marginTop="50dp"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+      android:gravity="center_horizontal"
+       >
+
+
+   <Button
+       android:textColor="@color/colorwrite"
+       android:layout_width="280dp"
+       android:layout_height="50dp"
+     android:id="@+id/save_jianjie"
+       android:text="保存"
+       android:background="@drawable/selecter_but_two"
+
+       />
+
+   </LinearLayout>
+
+</LinearLayout>

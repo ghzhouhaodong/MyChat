@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+     android:id="@+id/linear"
+    tools:context="com.zhd.lenovo.mychat.activirys.RegisterActivity">
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+          android:orientation="vertical"
+       >
+
+<RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/backgroud"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/back_login"
+            android:src="@drawable/login_new_arrow"
+            android:layout_marginLeft="5dp"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="登录"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorwrite"
+            android:layout_marginRight="10dp"
+
+            />
+    </RelativeLayout>
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+     android:layout_marginTop="50dp"
+android:gravity="center_horizontal"
+      >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:text="新用户注册"
+  android:textSize="20dp"
+        />
+     <TextView
+
+        android:layout_marginTop="35dp"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="注册成功后，性别不可更改"
+
+         />
+
+  </RelativeLayout>
+
+
+    <LinearLayout
+       android:layout_marginTop="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+      android:gravity="center_horizontal"
+        >
+    <RadioGroup
+    android:id="@+id/radiogroup_sex"
+        android:layout_width="210dp"
+        android:layout_height="80dp"
+
+        android:orientation="horizontal"
+
+        >
+
+        <RadioButton
+            android:id="@+id/btn_0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/radiogroup_selecter"
+            android:button="@null"
+            android:checked="false"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black"
+            android:textSize="17.0sp" />
+
+      <RadioButton
+
+          android:layout_width="50dp"
+          android:layout_height="wrap_content"
+          android:button="@null"
+
+          />
+
+
+        <RadioButton
+            android:id="@+id/btn_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+          android:checked="false"
+            android:background="@drawable/radiogroup_selecter_women"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/black"
+            android:textSize="17.0sp" />
+
+
+    </RadioGroup>
+    </LinearLayout>
+
+    <com.example.horizontalselectedviewlibrary.HorizontalselectedView
+       android:padding="5dp"
+        android:id="@+id/hd_main"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="center_vertical"
+        app:HorizontalselectedViewSeesize="5"
+        app:HorizontalselectedViewSelectedTextColor="@color/backgroud"
+        app:HorizontalselectedViewSelectedTextSize="60"
+        app:HorizontalselectedViewTextColor="@color/gray"
+        app:HorizontalselectedViewTextSize="40"
+
+
+
+
+        />
+
+  <LinearLayout
+      android:layout_marginTop="30dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center_horizontal"
+      >
+      <Button
+
+          android:id="@+id/btn_register_enter"
+        android:text="确定"
+          android:background="@drawable/selecter_but_two"
+           android:textColor="@color/colorwrite"
+          android:layout_width="250dp"
+          android:layout_height="50dp" />
+
+
+  </LinearLayout>
+   </LinearLayout>
+
+</RelativeLayout>

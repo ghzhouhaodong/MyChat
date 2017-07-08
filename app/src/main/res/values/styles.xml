@@ -1,0 +1,10 @@
+<resources>
+
+    <style name="no_title" parent="@android:style/Theme.Light.NoTitleBar">
+
+        <!-- 沉浸式状态栏 -->
+        <item name="android:fitsSystemWindows">true</item>
+
+    </style>
+
+</resources>

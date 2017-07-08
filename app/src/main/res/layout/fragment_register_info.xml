@@ -1,0 +1,199 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     android:background="@color/colorwrite"
+    tools:context="com.zhd.lenovo.mychat.fragments.RegisterInfoFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/backgroud"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/back_login_three"
+            android:src="@drawable/login_new_arrow"
+            android:layout_marginLeft="5dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="注册"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorwrite"
+            android:layout_marginRight="10dp"
+            />
+    </RelativeLayout>
+
+ <LinearLayout
+      android:id="@+id/username_click"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+      android:paddingLeft="10dp"
+       android:paddingRight="10dp"
+     android:orientation="horizontal"
+     >
+     <TextView
+         android:padding="5dp"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="昵称"
+         />
+     <EditText
+
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+          android:id="@+id/registerUsername"
+         />
+
+
+ </LinearLayout>
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal"
+        >
+        <TextView
+             android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="密码"
+
+            />
+        <EditText
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/registerUserpwd"
+            android:inputType="textPassword"
+            />
+
+
+    </LinearLayout>
+
+
+
+
+  <LinearLayout
+      android:id="@+id/sex_click"
+     android:layout_marginTop="20dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+       android:paddingLeft="10dp"
+       android:paddingRight="10dp"
+      >
+   <TextView
+       android:layout_weight="1"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+     android:text="性别"
+       />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="男"
+      android:id="@+id/register_Sex"
+        />
+  </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/age_click"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="年龄"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="21"
+            android:id="@+id/register_age"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/diqv_click"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="地区"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请选择"
+            android:id="@+id/register_diqv"
+            />
+    </LinearLayout>
+    <LinearLayout
+         android:id="@+id/jianjie_click"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="简介"
+            />
+        <TextView
+            android:textColor="@color/gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="一句话描述一下自己"
+            android:id="@+id/register_jianjie"
+            />
+    </LinearLayout>
+
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+    android:paddingRight="10dp"
+     android:paddingLeft="10dp"
+     android:layout_marginTop="30dp"
+     >
+     <Button
+
+         android:textColor="@color/colorwrite"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="下一步"
+       android:background="@drawable/selecter_but_two"
+      android:id="@+id/register_next"
+         />
+
+
+
+
+ </LinearLayout>
+
+
+
+
+</LinearLayout>

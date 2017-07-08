@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.zhd.lenovo.mychat.SplashActivity"
+      android:background="@drawable/welcome_bg"
+    >
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:layout_marginBottom="50dp"
+      android:gravity="center_horizontal"
+     android:layout_alignParentBottom="true"
+     android:layout_alignParentLeft="true"
+     android:layout_alignParentStart="true">
+
+
+       <Button
+           android:id="@+id/login_btn_main"
+           android:textColor="@color/colorwrite"
+           android:layout_width="130dp"
+           android:layout_height="45dp"
+           android:text="登录"
+           android:background="@drawable/selecter_but"
+
+           />
+     <TextView
+         android:layout_width="20dp"
+         android:layout_height="10dp"/>
+
+
+
+         <Button
+             android:id="@+id/register_btn_main"
+             android:textColor="@color/colorwrite"
+             android:layout_width="130dp"
+             android:layout_height="45dp"
+             android:text="注册"
+             android:background="@drawable/selecter_but"
+
+
+             />
+
+
+ </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+      android:orientation="vertical"
+    tools:context="com.zhd.lenovo.mychat.activirys.LoginActivity">
+ <RelativeLayout
+
+     android:layout_width="match_parent"
+     android:layout_height="50dp"
+    android:background="@color/backgroud"
+     >
+   <ImageView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:id="@+id/back_login"
+        android:src="@drawable/login_new_arrow"
+ android:layout_marginLeft="5dp"
+
+       />
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:text="@string/title_login"
+        android:layout_centerVertical="true"
+        android:textColor="@color/colorwrite"
+          android:layout_marginRight="10dp"
+
+
+          />
+ </RelativeLayout
+       >
+    <TextView
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+     android:layout_marginTop="60dp"
+        android:text="@string/title_login"
+      android:textSize="20sp"
+        />
+  <EditText
+      android:id="@+id/phone_num_login"
+    android:layout_marginTop="50dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="手机号/邮箱"
+
+      />
+   <EditText
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:hint="密码"
+          android:id="@+id/pwd_edittext_login"
+
+       />
+  <LinearLayout
+      android:layout_marginTop="50dp"
+       android:gravity="center_horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <Button
+   android:background="@drawable/selecter_but_two"
+
+          android:layout_width="250dp"
+          android:layout_height="50dp"
+          android:text="登录"
+          android:textColor="@color/colorwrite"
+         android:id="@+id/login_two_btn"
+          />
+
+  </LinearLayout>
+ <RelativeLayout
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+       android:gravity="center_horizontal"
+
+     >
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+           android:id="@+id/goto_register"
+        android:text="我要注册"
+          android:textColor="@color/backgroud"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+
+          />
+
+
+ </RelativeLayout>
+
+</LinearLayout>
