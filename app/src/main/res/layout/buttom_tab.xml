@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     android:orientation="vertical"
+    android:gravity="center_horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <RadioGroup
+        android:id="@+id/tab_radiogroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+       android:paddingTop="@dimen/margin_5dp"
+        >
+
+        <com.zhd.lenovo.mychat.widget.MyRadioButton
+            app:drawableTop="@drawable/tab_layout_selecter1"
+            app:drawableSize="30dp"
+            android:id="@+id/radiobutton_home"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="@string/tab_1"
+            android:textColor="@drawable/tab_text_selecter"
+            android:textSize="10sp"
+           />
+
+        <com.zhd.lenovo.mychat.widget.MyRadioButton
+            android:id="@+id/radiobutton_discover"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="@string/tab_2"
+            android:textColor="@drawable/tab_text_selecter"
+            android:textSize="10sp"
+            app:drawableTop="@drawable/tab_layout_selecter2"
+            app:drawableSize="30dp"
+            />
+
+        <com.zhd.lenovo.mychat.widget.MyRadioButton
+            app:drawableTop="@drawable/tab_layout_selecter3"
+            app:drawableSize="30dp"
+
+            android:id="@+id/radiobutton_feed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="@string/tab_3"
+            android:textColor="@drawable/tab_text_selecter"
+            android:textSize="10sp" />
+
+        <com.zhd.lenovo.mychat.widget.MyRadioButton
+            app:drawableTop="@drawable/tab_layout_selecter4"
+            app:drawableSize="30dp"
+            android:id="@+id/radiobutton_me"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/tab_4"
+            android:textColor="@drawable/tab_text_selecter"
+            android:textSize="10sp"
+            android:clickable="true"
+            />
+
+
+    </RadioGroup>
+
+
+</LinearLayout>

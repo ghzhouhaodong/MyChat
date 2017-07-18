@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+
+    <com.zhd.lenovo.mychat.mview.MonitorScrollView
+        android:id="@+id/sv_translu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_pic"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:padding="@dimen/margin_5dp"
+                android:background="#D4D4D4"
+                android:gravity="center_vertical"
+                >
+                <TextView
+                    android:paddingLeft="@dimen/margin_12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:text="Ta的相册"
+                    android:textSize="15sp"
+
+                    />
+
+            </LinearLayout>
+            <com.zhd.lenovo.mychat.mview.MyHorizontalScrollView
+                android:id="@+id/id_horizontalScrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_gravity="bottom"
+                android:background="@android:color/white"
+                android:scrollbars="none" >
+
+                <LinearLayout
+                    android:id="@+id/id_gallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal" >
+                </LinearLayout>
+            </com.zhd.lenovo.mychat.mview.MyHorizontalScrollView>
+
+
+
+        </LinearLayout>
+    </com.zhd.lenovo.mychat.mview.MonitorScrollView>
+
+    <android.support.v7.widget.Toolbar
+
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroud"
+        android:fitsSystemWindows="true"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+</RelativeLayout>
+

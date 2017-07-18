@@ -77,11 +77,18 @@ public class RetrofitManager {
           apiService.post(url,map).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(observer);
+
     }
 
 
     public static void uploadPhoto(MultipartBody multipartBody,Map<String,String> map, Observer<String> observer){
         apiService.uploadPhoto(multipartBody,map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
+    }
+    public static void uploadPhoto2(MultipartBody multipartBody,Map<String,String> map, Observer<String> observer){
+        apiService.uploadPhoto2(multipartBody,map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);

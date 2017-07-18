@@ -1,10 +1,19 @@
 <resources>
 
-    <style name="no_title" parent="@android:style/Theme.Light.NoTitleBar">
-
+    <style name="no_title" parent="Theme.AppCompat.Light.NoActionBar"
+        >
         <!-- 沉浸式状态栏 -->
         <item name="android:fitsSystemWindows">true</item>
 
     </style>
 
+    <style name="TabAppTheme" parent="android:Theme.Holo.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/colorwrite</item>
+    </style>
+
+    <style name="Theme.no_title.Light.Dialog.NoActionBar" parent="android:Theme.Holo.Light.Dialog.NoActionBar" />
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
 </resources>

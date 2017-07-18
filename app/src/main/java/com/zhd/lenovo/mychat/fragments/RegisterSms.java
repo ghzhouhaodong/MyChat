@@ -21,6 +21,8 @@ import com.zhd.lenovo.mychat.mview.RegisterSmsView;
 import com.zhd.lenovo.mychat.presenter.RegisterSmsPresenter;
 import com.zhd.lenovo.mychat.widget.MyToast;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -86,6 +88,21 @@ public class RegisterSms extends BaseFragment<RegisterSmsView, RegisterSmsPresen
         SMSSDK.registerEventHandler(eventHandler);
         imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         unbinder = ButterKnife.bind(this, view);
+        //跳转新的Activity自动弹出软件盘
+        final Timer timer = new Timer();
+        timer.schedule(new TimerTask()
+                       {
+                           public void run()
+                           {
+                               InputMethodManager inputManager =
+                                       (InputMethodManager)phoneNum.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                               inputManager.showSoftInput(phoneNum, 0);
+                            timer.cancel();
+                           }
+                       },
+                500);
+
+
         return view;
 
 
@@ -186,8 +203,17 @@ public class RegisterSms extends BaseFragment<RegisterSmsView, RegisterSmsPresen
             case R.id.register_sms_btn:
 
    registerActivity.setPhone(phoneNum.getText().toString().trim());
-    presenter.nextStep(phoneNum.getText().toString().trim(),phoneYanzheng.getText().toString().trim());
-                imm.hideSoftInputFromWindow(phoneYanzheng.getWindowToken(), 0);
+           if(phoneYanzheng.getText().toString().trim().length()==4){
+               presenter.nextStep(phoneNum.getText().toString().trim(),phoneYanzheng.getText().toString().trim());
+               imm.hideSoftInputFromWindow(phoneYanzheng.getWindowToken(), 0);
+
+
+           }else{
+         MyToast.makeText(getActivity(),"验证码有误",Toast.LENGTH_SHORT);
+
+           }
+
+
                 break;
         }
     }

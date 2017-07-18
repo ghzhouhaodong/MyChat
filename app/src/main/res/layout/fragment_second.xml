@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.zhd.lenovo.mychat.fragments.tabfragment.SecondFragment">
+
+  <com.handmark.pulltorefresh.library.PullToRefreshListView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:id="@+id/listview_pull"
+      android:divider="@null"
+      android:scrollbars="none"
+
+      ></com.handmark.pulltorefresh.library.PullToRefreshListView>
+</FrameLayout>

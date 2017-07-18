@@ -13,9 +13,6 @@ import io.reactivex.disposables.Disposable;
 public abstract  class BaseObserver implements Observer<String> {
 
 
-
-
-
     @Override
     public void onSubscribe(@NonNull Disposable d) {
 

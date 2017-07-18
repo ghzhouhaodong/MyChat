@@ -6,6 +6,7 @@ package com.zhd.lenovo.mychat.bean;
 public class RegisterBean {
 
 
+
     /**
      * result_message : success
      * result_code : 200
@@ -135,4 +136,5 @@ public class RegisterBean {
             this.password = password;
         }
     }
+
 }

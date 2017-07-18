@@ -12,5 +12,9 @@ public class Constants {
 
 public static final String LOGIN_ACTION = "http://qhb.2dyt.com/MyInterface/userAction_login.action" ;
  public static final String REGISTER_ACTION = "http://qhb.2dyt.com/MyInterface/userAction_add.action" ;
+  public static final String PHOTO_ACTION ="http://qhb.2dyt.com/MyInterface/userAction_selectAllUser.action";
+   public static final  String  USER_INFO="http://qhb.2dyt.com/MyInterface/userAction_selectUserById.action";
+    public static final  String ADD_FRIEND= "http://qhb.2dyt.com/MyInterface/userAction_addFriends.action";
+  public static final  String  FRIEND_LINEAR=  "http://qhb.2dyt.com/MyInterface/userAction_selectAllUserAndFriend.action";
 
 }

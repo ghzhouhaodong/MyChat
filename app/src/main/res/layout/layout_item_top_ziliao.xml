@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:padding="@dimen/margin_5dp"
+  android:background="#D4D4D4"
+   android:gravity="center_vertical"
+    >
+<TextView
+android:paddingLeft="@dimen/margin_12dp"
+    android:layout_width="match_parent"
+    android:layout_height="20dp"
+   android:text="Ta的资料"
+  android:textSize="15sp"
+    android:id="@+id/top_ziliao__id"
+    />
+
+</LinearLayout>

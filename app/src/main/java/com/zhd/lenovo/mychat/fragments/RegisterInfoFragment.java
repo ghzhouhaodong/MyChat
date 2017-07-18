@@ -2,6 +2,7 @@ package com.zhd.lenovo.mychat.fragments;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,8 +30,11 @@ import com.zhd.lenovo.mychat.bean.RegisterBean;
 import com.zhd.lenovo.mychat.cipher.Md5Utils;
 import com.zhd.lenovo.mychat.mview.RegisterInfoView;
 import com.zhd.lenovo.mychat.presenter.RegisterInfoPresenter;
+import com.zhd.lenovo.mychat.utils.PreferencesUtils;
 import com.zhd.lenovo.mychat.widget.MyToast;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -92,6 +97,30 @@ public class RegisterInfoFragment extends BaseFragment<RegisterInfoView, Registe
         activity = (RegisterActivity) getActivity();
 
         unbinder = ButterKnife.bind(this, view);
+        toData();
+        registerUsername.requestFocus();
+        String valuesex = PreferencesUtils.getValueByKey(getActivity(), "onesex", "男");
+        String valueage = PreferencesUtils.getValueByKey(getActivity(), "oneage", "23");
+             String age= valueage.substring(0,2);
+        //截取年龄
+        registerAge.setText(age);
+        registerSex.setText(valuesex);
+        //跳转新的Activity自动弹出软件盘
+      final   Timer timer = new Timer();
+        timer.schedule(new TimerTask()
+                       {
+                           public void run()
+                           {
+                               InputMethodManager inputManager =
+                                       (InputMethodManager)registerUsername.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                               inputManager.showSoftInput(registerUsername, 0);
+                               timer.cancel();
+                           }
+                       },
+                500);
+
+
+
         return view;
 
     }
@@ -99,15 +128,23 @@ public class RegisterInfoFragment extends BaseFragment<RegisterInfoView, Registe
     @Override
     public void registerSuccess(RegisterBean registerBean) {
 if(registerBean.getResult_code()==200){
+
+    MyToast.makeText(getActivity(),"注册成功",Toast.LENGTH_SHORT);
     activity.toIActivity(UploadPhotoActivity.class,null,0);
           getActivity().finish();
     AppManager.getAppManager().finishActivity(getActivity());
        // AppManager.getAppManager().finishActivity(LoginActivity.class);
 
 
-}else{
+}else if(registerBean.getResult_message().equals("参数不正确")){
+    MyToast.makeText(getActivity(),"您的信息不完善",Toast.LENGTH_SHORT);
 
-   MyToast.makeText(IApplication.getApplication(),registerBean.getResult_message(),Toast.LENGTH_SHORT);
+
+}else if(registerBean.getResult_message().equals("手机号已存在")){
+    MyToast.makeText(getActivity(),"手机号已存在",Toast.LENGTH_SHORT);
+
+}else if(registerBean.getResult_message().equals("验签失败")){
+    MyToast.makeText(getActivity(),"验签失败",Toast.LENGTH_SHORT);
 
 }
 
@@ -115,7 +152,11 @@ if(registerBean.getResult_code()==200){
 
     @Override
     public void registerFailed(int code) {
-        MyToast.makeText(IApplication.getApplication(),code+"", Toast.LENGTH_SHORT);
+       if(code==0){
+           MyToast.makeText(IApplication.getApplication(),"您的网络有问题", Toast.LENGTH_SHORT);
+
+       }
+
     }
 
     @Override
@@ -148,7 +189,9 @@ if(registerBean.getResult_code()==200){
 
                 break;
             case R.id.register_next:
-              toData();
+
+          toData();
+
 
 
 
@@ -157,6 +200,9 @@ if(registerBean.getResult_code()==200){
     }
 
     private void toData() {
+
+
+
         RxView.clicks(registerNext).throttleFirst(5, TimeUnit.SECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
@@ -172,6 +218,7 @@ if(registerBean.getResult_code()==200){
 
     private void showCity() {
         cityPickerView = new CityPickerView(getActivity());
+
         cityPickerView.setOnCityItemClickListener(new CityPickerView.OnCityItemClickListener() {
             @Override
             public void onSelected(String... citySelected) {

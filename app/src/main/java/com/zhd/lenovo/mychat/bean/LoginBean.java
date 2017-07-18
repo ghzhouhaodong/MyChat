@@ -9,7 +9,7 @@ public class LoginBean {
 
     /**
      * result_message : success
-     * data : {"area":"安徽省安庆市枞阳县","password":"202cb962ac59075b964b07152d234b70","lasttime":1499433847032,"createtime":1499410944913,"gender":"男","lng":0,"phone":"13934722945","introduce":"证件","nickname":"123","userId":1,"lat":0}
+     * data : {"area":"安徽省安庆市怀宁县","password":"202cb962ac59075b964b07152d234b70","lasttime":1499587172246,"createtime":1499587138684,"gender":"男","lng":116.301463,"phone":"13934722945","introduce":"sjiisjj","imagePath":"http://dyt-pict.oss-cn-beijing.aliyuncs.com/dliao/default_man.jpg","nickname":"123","userId":63,"lat":40.042003}
      * result_code : 200
      */
 
@@ -43,17 +43,18 @@ public class LoginBean {
 
     public static class DataBean {
         /**
-         * area : 安徽省安庆市枞阳县
+         * area : 安徽省安庆市怀宁县
          * password : 202cb962ac59075b964b07152d234b70
-         * lasttime : 1499433847032
-         * createtime : 1499410944913
+         * lasttime : 1499587172246
+         * createtime : 1499587138684
          * gender : 男
-         * lng : 0
+         * lng : 116.301463
          * phone : 13934722945
-         * introduce : 证件
+         * introduce : sjiisjj
+         * imagePath : http://dyt-pict.oss-cn-beijing.aliyuncs.com/dliao/default_man.jpg
          * nickname : 123
-         * userId : 1
-         * lat : 0
+         * userId : 63
+         * lat : 40.042003
          */
 
         private String area;
@@ -61,12 +62,13 @@ public class LoginBean {
         private long lasttime;
         private long createtime;
         private String gender;
-        private int lng;
+        private double lng;
         private String phone;
         private String introduce;
+        private String imagePath;
         private String nickname;
         private int userId;
-        private int lat;
+        private double lat;
 
         public String getArea() {
             return area;
@@ -108,11 +110,11 @@ public class LoginBean {
             this.gender = gender;
         }
 
-        public int getLng() {
+        public double getLng() {
             return lng;
         }
 
-        public void setLng(int lng) {
+        public void setLng(double lng) {
             this.lng = lng;
         }
 
@@ -132,6 +134,14 @@ public class LoginBean {
             this.introduce = introduce;
         }
 
+        public String getImagePath() {
+            return imagePath;
+        }
+
+        public void setImagePath(String imagePath) {
+            this.imagePath = imagePath;
+        }
+
         public String getNickname() {
             return nickname;
         }
@@ -148,11 +158,11 @@ public class LoginBean {
             this.userId = userId;
         }
 
-        public int getLat() {
+        public double getLat() {
             return lat;
         }
 
-        public void setLat(int lat) {
+        public void setLat(double lat) {
             this.lat = lat;
         }
     }

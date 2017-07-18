@@ -3,28 +3,33 @@ package com.zhd.lenovo.mychat.base;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.zhd.lenovo.mychat.R;
+import com.zhd.lenovo.mychat.utils.StatusBarCompat;
 
 import java.util.List;
 
-public class IActivity extends FragmentActivity implements View.OnClickListener {
+public class IActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView textViewTitle;
     private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_i);
+        StatusBarCompat.compat(this, getResources().getColor(R.color.backgroud));
+
         fragmentManager = getSupportFragmentManager();
     //把已打开的activity添加到
-  AppManager.getAppManager().addActivity(this);
+ // AppManager.getAppManager().addActivity(this);
 
 
     }

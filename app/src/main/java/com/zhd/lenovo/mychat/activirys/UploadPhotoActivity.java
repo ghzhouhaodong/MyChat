@@ -69,6 +69,7 @@ public class UploadPhotoActivity extends IActivity {
         ButterKnife.bind(this);
 
 
+
     }
 
     @OnClick({R.id.back_upload_btn, R.id.open_cramera, R.id.open_photo})
@@ -232,11 +233,13 @@ public class UploadPhotoActivity extends IActivity {
                                 fos.close();
                                 fos.flush();
                             }
+
+                            uploadFile(f,bitmap);
                             if (!bitmap.isRecycled()) {
                                 bitmap.isRecycled();
                             }
 
-                            uploadFile(f);
+
 
                         }
 
@@ -261,32 +264,21 @@ public class UploadPhotoActivity extends IActivity {
                             fos.close();
                             fos.flush();
                         }
+
+                        uploadFile(file,bitmap);
                         if (!bitmap.isRecycled()) {
                             //通知系统 回收bitmap
                             bitmap.isRecycled();
                         }
-                        uploadFile(file);
-                    }
 
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
-
                 break;
         }
-
-
-
-
-
-
     }
-
-
-
-    public void uploadFile(File file){
+    public void uploadFile(File file,Bitmap bitmap){
 
 
         if(!file.exists()){
@@ -301,6 +293,10 @@ public class UploadPhotoActivity extends IActivity {
         long ctimer = System.currentTimeMillis() ;
         Map<String,String> map = new HashMap<String,String>();
         map.put("user.currenttimer",ctimer+"");
+        map.put("user.picWidth", bitmap.getWidth()+"");
+        map.put("user.picHeight", bitmap.getHeight()+"");
+        System.out.println("bitmap.getWidth()+\"\" = " + bitmap.getWidth()+"");
+
         String sign =  JNICore.getSign(SortUtils.getMapResult(SortUtils.sortString(map))) ;
         map.put("user.sign",sign);
 
@@ -325,8 +321,14 @@ public class UploadPhotoActivity extends IActivity {
                     UploadPhotoBean bean =  gson.fromJson(result, UploadPhotoBean.class);
                     if(bean.getResult_code() == 200){
                         MyToast.makeText(IApplication.getApplication(),"上传成功", Toast.LENGTH_SHORT);
+
+
                     }
                     AppManager.getAppManager().finishActivity(UploadPhotoActivity.class);
+                    startActivity(new Intent(UploadPhotoActivity.this,TabActivity.class));
+
+
+
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }

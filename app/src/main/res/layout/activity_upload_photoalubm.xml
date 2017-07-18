@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="com.zhd.lenovo.mychat.activirys.UploadPhotoActivity">
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/backgroud"
+        >
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/back_upload_btn2"
+            android:src="@drawable/login_new_arrow"
+            android:layout_marginLeft="5dp"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="上传相册"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorwrite"
+            android:layout_marginRight="10dp"
+
+            />
+    </RelativeLayout>
+
+    <ImageView
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/open_cramera2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/upload_image_select"
+  android:clickable="true"
+        />
+    <TextView
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开相机"
+
+        />
+
+   <ImageView
+       android:padding="@dimen/activity_horizontal_margin"
+       android:layout_marginTop="50dp"
+       android:layout_gravity="center_horizontal"
+         android:id="@+id/open_photo2"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:background="@drawable/upload_image_select2"
+          android:clickable="true"
+       />
+     <TextView
+
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+         android:gravity="center_horizontal"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="打开相册"
+
+         />
+
+
+
+</LinearLayout>

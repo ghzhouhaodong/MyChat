@@ -61,6 +61,7 @@
      android:layout_height="wrap_content"
      android:id="@+id/phone_num"
       android:hint="请输入手机号"
+    android:maxLength="11"
      />
   <LinearLayout
       android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -71,10 +72,12 @@
       >
 
       <EditText
+         android:inputType="number"
           android:id="@+id/phone_yanzheng"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_weight="3"
+          android:maxLength="4"
           android:hint="验证码" />
       <Button
           android:textSize="10sp"

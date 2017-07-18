@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.zhd.lenovo.mychat.fragments.tabfragment.FourthFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/backgroud"
+        android:id="@+id/relat_backgroud_first"
+        >
+
+        <TextView
+
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="我的"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorwrite"
+            android:layout_marginRight="10dp"
+            />
+    </RelativeLayout>
+
+
+
+    <Button
+        android:layout_marginTop="@dimen/margin_12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_save_photo"
+       android:textColor="@color/colorwrite"
+       android:text="保存到相册"
+        android:background="@drawable/selecter_but"
+        />
+   <Button
+       android:layout_marginTop="20dp"
+       android:textColor="@color/colorwrite"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+     android:text="退出登录"
+       android:background="@drawable/selecter_but"
+      android:id="@+id/quit_login"
+       />
+
+
+</LinearLayout>
