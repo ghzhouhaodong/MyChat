@@ -16,18 +16,20 @@ import android.widget.Toast;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.zhd.lenovo.mychat.R;
+import com.zhd.lenovo.mychat.base.AppManager;
 import com.zhd.lenovo.mychat.base.BaseMvpActivity;
 import com.zhd.lenovo.mychat.base.IApplication;
 import com.zhd.lenovo.mychat.mview.LoginView;
 import com.zhd.lenovo.mychat.presenter.LoginPresenter;
 import com.zhd.lenovo.mychat.utils.PreferencesUtils;
 import com.zhd.lenovo.mychat.widget.MyToast;
+import com.zhd.lenovo.mychat.widget.keyboard.KeyBoardHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseMvpActivity<LoginView, LoginPresenter> implements LoginView{
+public class LoginActivity extends BaseMvpActivity<LoginView, LoginPresenter> implements LoginView,KeyBoardHelper.OnKeyBoardStatusChangeListener{
 
     @BindView(R.id.back_login)
     ImageView backLogin;
@@ -58,9 +60,12 @@ public class LoginActivity extends BaseMvpActivity<LoginView, LoginPresenter> im
 
         phoneNumLogin.setText((String)PreferencesUtils.getValueByKey(IApplication.getApplication(),"phone",""));
       pwdEdittextLogin.setText((String)PreferencesUtils.getValueByKey(IApplication.getApplication(),"password",""));
+        KeyBoardHelper keyBoardHelper = new KeyBoardHelper(this) ;
+        keyBoardHelper.onCreate();
+        keyBoardHelper.setOnKeyBoardStatusChangeListener(this);
 
 
-         phoneNumLogin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        phoneNumLogin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
              @Override
              public void onFocusChange(View v, boolean hasFocus) {
                //  imm.toggleSoftInputFromWindow(phoneNumLogin.getWindowToken(), 0, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -131,16 +136,22 @@ public class LoginActivity extends BaseMvpActivity<LoginView, LoginPresenter> im
     }
 
     @Override
-    public void LoginSuccess(String result) {
+    public void LoginSuccess(String result,String myname,String myid) {
         MyToast.makeText(IApplication.getApplication(),result,Toast.LENGTH_SHORT);
  if(result.equals("登录成功")){
+     //把自己的名称存入
+       PreferencesUtils.addConfigInfo(this,"myname",myname);
+     PreferencesUtils.addConfigInfo(this,"myid",myid);
   //跳转到主导航
    // yxpassword   uid
      String yxpassword = PreferencesUtils.getValueByKey(LoginActivity.this, "yxpassword", "0");
      String uid = PreferencesUtils.getValueByKey(LoginActivity.this, "uid", "0");
      Toast.makeText(LoginActivity.this, ""+yxpassword+uid, Toast.LENGTH_SHORT).show();
-   if (!yxpassword.equals("")&&!uid.equals("")) {
+     if (!(yxpassword.equals("")&&uid.equals(""))){
   //     Toast.makeText(IApplication.getApplication(), "denl", Toast.LENGTH_SHORT).show();
+
+
+
        EMClient.getInstance().login(uid, yxpassword, new EMCallBack() {//回调
 
            @Override
@@ -163,6 +174,7 @@ public class LoginActivity extends BaseMvpActivity<LoginView, LoginPresenter> im
               // Toast.makeText(LoginActivity.this, "denluhenggong", Toast.LENGTH_SHORT).show();
            }
        });
+
    }
 
 
@@ -178,5 +190,27 @@ public class LoginActivity extends BaseMvpActivity<LoginView, LoginPresenter> im
     public void LoginFailed() {
 
  MyToast.makeText(IApplication.getApplication(),"登录失败，请查看网络是否连接",Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void OnKeyBoardPop(int keyBoardheight) {
+        PreferencesUtils.addConfigInfo(this,"kh",keyBoardheight);
+        System.out.println("keyBoardheight OnKeyBoardPop = " + keyBoardheight);
+
+
+    }
+
+    @Override
+    public void OnKeyBoardClose(int oldKeyBoardheight) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        AppManager appManager = AppManager.getAppManager();
+         appManager.finishActivity(this);
+
     }
 }

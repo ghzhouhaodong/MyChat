@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.zhd.lenovo.mychat.R;
+import com.zhd.lenovo.mychat.base.AppManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +31,12 @@ public class AllPhotoActivity extends Activity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppManager.getAppManager().finishActivity(this);
 
+    }
 
 
 

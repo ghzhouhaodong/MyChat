@@ -21,6 +21,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.zhd.lenovo.mychat.activirys.LoginActivity;
 import com.zhd.lenovo.mychat.activirys.RegisterActivity;
 import com.zhd.lenovo.mychat.activirys.TabActivity;
+import com.zhd.lenovo.mychat.base.AppManager;
 import com.zhd.lenovo.mychat.base.IApplication;
 import com.zhd.lenovo.mychat.utils.PreferencesUtils;
 
@@ -171,6 +172,7 @@ public void showRationaleForCamera(final PermissionRequest request){
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        AppManager.getAppManager().finishActivity(this);
 
     }
 

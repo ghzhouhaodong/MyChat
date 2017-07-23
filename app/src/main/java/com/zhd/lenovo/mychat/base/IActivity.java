@@ -29,7 +29,7 @@ public class IActivity extends AppCompatActivity implements View.OnClickListener
 
         fragmentManager = getSupportFragmentManager();
     //把已打开的activity添加到
- // AppManager.getAppManager().addActivity(this);
+ AppManager.getAppManager().addActivity(this);
 
 
     }

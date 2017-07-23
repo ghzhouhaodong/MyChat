@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.horizontalselectedviewlibrary.HorizontalselectedView;
 import com.zhd.lenovo.mychat.R;
+import com.zhd.lenovo.mychat.base.AppManager;
 import com.zhd.lenovo.mychat.base.BaseMvpActivity;
 import com.zhd.lenovo.mychat.base.IApplication;
 import com.zhd.lenovo.mychat.fragments.RegisterInfoFragment;
@@ -128,4 +129,14 @@ public class RegisterActivity extends BaseMvpActivity<RegisterView, RegisterPres
  public void toPos(int pos){
    switchIFragment(pos,listf,R.id.linear);
      }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppManager appManager = AppManager.getAppManager();
+
+        appManager.finishActivity(this);
+
+
+    }
 }

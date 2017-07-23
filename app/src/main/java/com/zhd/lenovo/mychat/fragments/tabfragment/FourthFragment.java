@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhd.lenovo.mychat.R;
@@ -33,6 +34,8 @@ public class FourthFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.quit_login)
     Button quitLogin;
+  @BindView(R.id.myname_frag_four)
+    TextView myname_txt;
 
     public FourthFragment() {
         // Required empty public constructor
@@ -45,6 +48,8 @@ public class FourthFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fourth, container, false);
         unbinder = ButterKnife.bind(this, view);
+               String myname= PreferencesUtils.getValueByKey(getActivity(),"myname","未登录");
+              myname_txt.setText(myname);
       boolean islogin=   PreferencesUtils.getValueByKey(getActivity(),"islogin",false);
         if(islogin){
             quitLogin.setVisibility(view.VISIBLE);

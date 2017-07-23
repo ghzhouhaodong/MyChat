@@ -340,6 +340,11 @@ public class UploadPhotoAlbumActivity extends IActivity {
 
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppManager.getAppManager().finishActivity(this);
 
+    }
 
 }

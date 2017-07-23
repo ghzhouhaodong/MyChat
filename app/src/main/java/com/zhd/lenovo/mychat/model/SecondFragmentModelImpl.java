@@ -20,14 +20,15 @@ public class SecondFragmentModelImpl implements SecondFragmentModel{
     public void getData(String currenttimer, final SecondFragmentModelLisenter lisenter) {
         Map<String,String>map=new HashMap<String,String>();
         map.put("user.currenttimer",currenttimer);
-
+        System.out.println("map = " + map.get("user.currenttimer"));
         RetrofitManager.post(Constants.FRIEND_LINEAR, map, new BaseObserver() {
+
             @Override
             public void onSuccess(String result) {
+
                 System.out.println("SecondFragment的数据 = " + result);
                 GsonUtil instance = GsonUtil.getInstance();
                 FriendBean friendBean = instance.fromJson(result, FriendBean.class);
-
 
                 lisenter.onSuccess(friendBean);
 

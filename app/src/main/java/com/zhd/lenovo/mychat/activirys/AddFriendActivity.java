@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhd.lenovo.mychat.R;
+import com.zhd.lenovo.mychat.base.AppManager;
 import com.zhd.lenovo.mychat.base.IActivity;
 import com.zhd.lenovo.mychat.base.IApplication;
 import com.zhd.lenovo.mychat.bean.AddFirendBean;
@@ -58,6 +59,10 @@ public class AddFriendActivity extends IActivity {
                 MyToast.makeText(IApplication.getApplication(), addFirendBean.getResult_message(), Toast.LENGTH_SHORT);
        if(addFirendBean.getResult_message().equals("添加好友成功")){
 
+         Intent intent=new Intent(AddFriendActivity.this,ChatActivity.class);
+              intent.putExtra("userid",friendId);
+           startActivity(intent);
+
 
            MyToast.makeText(IApplication.getApplication(),"跳转到聊天页面", Toast.LENGTH_SHORT);
        }
@@ -73,4 +78,12 @@ public class AddFriendActivity extends IActivity {
 
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppManager.getAppManager().finishActivity(this);
+
+    }
+
+
 }

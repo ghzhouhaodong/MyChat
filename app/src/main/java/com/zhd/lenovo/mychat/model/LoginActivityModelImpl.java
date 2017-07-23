@@ -44,11 +44,20 @@ public class LoginActivityModelImpl implements LoginActivityModel{
                 Gson gson=new Gson();
                 LoginBean loginBean = gson.fromJson(result, LoginBean.class);
                 if(loginBean.getResult_code()==200){
-                    //MyToast.makeText(LoginActivity.this,"登录成功", Toast.LENGTH_SHORT);
-          listener.Success("登录成功");
+                    PreferencesUtils.addConfigInfo(IApplication.getApplication(),"phone",loginBean.getData().getPhone());
+                    PreferencesUtils.addConfigInfo(IApplication.getApplication(),"password",loginBean.getData().getPassword());
+                  PreferencesUtils.addConfigInfo(IApplication.getApplication(),"yxpassword",loginBean.getData().getYxpassword());
+                 PreferencesUtils.addConfigInfo(IApplication.getApplication(),"uid",loginBean.getData().getUserId()+"");
+                  //  MyToast.makeText(IApplication.getApplication(),""+loginBean.getData().getNickname()+"已登录", Toast.LENGTH_SHORT);
+
+    listener.Success("登录成功",""+loginBean.getData().getNickname()+"已登录",loginBean.getData().getUserId()+"");
+
+
+
+
 
                 }else if(loginBean.getResult_code()==303){
-           listener.Success("登录失败,用户名密码错误");
+           listener.Success("登录失败,用户名密码错误","","");
 
                 }
 
@@ -61,7 +70,7 @@ public class LoginActivityModelImpl implements LoginActivityModel{
         });
     }
     public interface  LoginActivityModelImplListener{
-    public void Success(String result);
+    public void Success(String result,String myname,String myid);
      public void Failed();
 
 

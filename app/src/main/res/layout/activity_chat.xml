@@ -1,18 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.zhd.lenovo.mychat.activirys.ChatActivity">
-  <FrameLayout
-      android:layout_width="368dp"
-      android:layout_height="599dp"
-      android:id="@+id/chat_frame"
-      tools:layout_editor_absoluteY="8dp"
-      tools:layout_editor_absoluteX="8dp"></FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/backgroud"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/login_new_arrow"
+            android:id="@+id/back_login_four"
+            android:layout_marginLeft="5dp"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+
+            android:layout_centerVertical="true"
+            android:textColor="#ffffff"
+            android:layout_marginRight="10dp"
+
+
+            />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/chat_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#00000000"
+        android:dividerHeight="0dip"
+        android:background="#ffffff"
+        android:layout_weight="1"></ListView>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_5dp"
+          android:gravity="center_vertical"
+            >
+
+            <Button
+                android:gravity="center"
+                android:id="@+id/chat_btn_sendvoice"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ease_chatting_setmode_voice_btn" />
+
+            <TextView
+                android:layout_width="@dimen/margin_12dp"
+                android:layout_height="@dimen/margin_12dp"></TextView>
+
+       <LinearLayout
+           android:layout_width="280dp"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+   android:id="@+id/linear_addvoicebutton"
+           >
+           <com.zhd.lenovo.mychat.widget.EditTextPreIme
+               android:id="@+id/chat_edittext"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+
+               />
+
+
+
+       </LinearLayout>
 
 
 
 
-</android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:layout_width="@dimen/margin_12dp"
+                android:layout_height="@dimen/margin_12dp"></TextView>
+
+            <Button
+                android:gravity="center"
+                android:id="@+id/chat_btn_biaoqing"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ease_chatting_biaoqing_btn_select" />
+
+            <TextView
+                android:layout_width="@dimen/margin_12dp"
+                android:layout_height="@dimen/margin_12dp"></TextView>
+
+
+
+                <Button
+                    android:id="@+id/chat_btn_jia"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ease_type_select_btn"
+                    android:paddingLeft="@dimen/margin_5dp"
+                    android:paddingRight="@dimen/margin_5dp"
+                    />
+
+                <TextView
+                    android:id="@+id/chat_btn_sendtext"
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                  android:background="@drawable/shape_send"
+                    android:gravity="center"
+                    android:text="发送"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+
+
+
+
+            <TextView
+                android:layout_width="@dimen/margin_12dp"
+                android:layout_height="@dimen/margin_12dp"></TextView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/buttom_layout_view"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#ffffff"
+            android:visibility="gone"
+            />
+
+
+
+
+</LinearLayout>

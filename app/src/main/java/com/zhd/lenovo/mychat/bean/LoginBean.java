@@ -69,6 +69,15 @@ public class LoginBean {
         private String nickname;
         private int userId;
         private double lat;
+            private String yxpassword;
+
+        public String getYxpassword() {
+            return yxpassword;
+        }
+
+        public void setYxpassword(String yxpassword) {
+            this.yxpassword = yxpassword;
+        }
 
         public String getArea() {
             return area;

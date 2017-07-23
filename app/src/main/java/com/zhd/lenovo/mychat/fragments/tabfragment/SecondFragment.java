@@ -108,7 +108,8 @@ public class SecondFragment extends BaseFragment<SecondFragmentView, SecondFramg
 
                        Toast.makeText(getActivity(),  queryalllist.size()+"",Toast.LENGTH_SHORT).show();
                     long lasttime = queryalllist.get(queryalllist.size()-1).getLasttime();
-                    secondFramgentPresenter.getData(lasttime+"");
+                   secondFramgentPresenter.getData(lasttime+"");
+
                     MyToast.makeText(IApplication.application,lasttime+"",Toast.LENGTH_SHORT);
 
                 }
@@ -140,26 +141,31 @@ public class SecondFragment extends BaseFragment<SecondFragmentView, SecondFramg
          FriendDataDaoUtils.delete();
          FriendDataDaoUtils.insertOrReplace(data);
         queryalllist.clear();
-        //  data.clear();
+       // data.clear();
         query = FriendDataDaoUtils.query();
-        queryalllist.addAll(query);
+
+             queryalllist.addAll(data);
+             data.clear();
         query.clear();
            if(queryalllist.size()>0){
-
-
                secondFragAdapter = new SecondFragAdapter(getActivity(), queryalllist);
                listviewPull.setAdapter(secondFragAdapter);
+
                listviewPull.onRefreshComplete();
+
                flag=false;
+               secondFragAdapter.notifyDataSetChanged();
            }
 
          }
     }else{
         if(queryalllist.size()>0){
 
-         //   queryalllist.addAll(data);
-       //     secondFragAdapter.notifyDataSetChanged();
-       //     data.clear();
+         queryalllist.addAll(data);
+          secondFragAdapter.notifyDataSetChanged();
+           data.clear();
+            listviewPull.onRefreshComplete();
+
         }
 
 

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.zhd.lenovo.mychat.R;
+import com.zhd.lenovo.mychat.base.AppManager;
 import com.zhd.lenovo.mychat.base.IActivity;
 import com.zhd.lenovo.mychat.fragments.tabfragment.FirstFragment;
 import com.zhd.lenovo.mychat.fragments.tabfragment.FourthFragment;
@@ -77,6 +78,11 @@ public class TabActivity extends IActivity implements ButtomLayout.OnSelectListe
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppManager appManager = AppManager.getAppManager();
+        appManager.finishActivity(this);
 
-
+    }
 }

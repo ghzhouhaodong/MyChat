@@ -30,8 +30,8 @@ public LoginActivityModelImpl loginActivityModel;
      }
     loginActivityModel.Login(username, password, new LoginActivityModelImpl.LoginActivityModelImplListener() {
         @Override
-        public void Success(String result) {
-          loginView.LoginSuccess(result);
+        public void Success(String result,String myname,String myid) {
+          loginView.LoginSuccess(result,myname, myid);
         }
 
         @Override

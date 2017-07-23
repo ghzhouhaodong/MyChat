@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.zhd.lenovo.mychat.R;
 import com.zhd.lenovo.mychat.adapters.HorizontalScrollViewAdapter;
+import com.zhd.lenovo.mychat.base.AppManager;
 import com.zhd.lenovo.mychat.base.BaseMvpActivity;
 import com.zhd.lenovo.mychat.base.IApplication;
 import com.zhd.lenovo.mychat.bean.DataItemBean;
@@ -267,6 +268,10 @@ public class ItemContentActivity extends BaseMvpActivity<FirstFragmentItemView, 
 
 
            }else{
+              Intent intent=new Intent(ItemContentActivity.this,ChatActivity.class);
+               intent.putExtra("userid",userid+"");
+               startActivity(intent);
+
                MyToast.makeText(IApplication.getApplication(),"跳转到聊天页面",Toast.LENGTH_SHORT);
            }
 
@@ -315,5 +320,13 @@ public class ItemContentActivity extends BaseMvpActivity<FirstFragmentItemView, 
         toolbar.setBackgroundResource(R.color.backgroud);
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppManager appManager = AppManager.getAppManager();
+        appManager.finishActivity(this);
+
     }
 }

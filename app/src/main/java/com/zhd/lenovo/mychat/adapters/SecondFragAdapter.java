@@ -4,11 +4,10 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhd.lenovo.mychat.R;
 import com.zhd.lenovo.mychat.bean.FriendDataBean;
 
@@ -56,7 +55,7 @@ public class SecondFragAdapter extends BaseAdapter {
        holder.friendListAge= (TextView) convertView.findViewById(R.id.friend_list_age);
         holder.friendLinearBtn=(LinearLayout)convertView.findViewById(R.id.friend_linear_btn);
         holder.friendListDoc= (TextView) convertView.findViewById(R.id.friend_list_doc);
-      holder.friendListImage = (ImageView) convertView.findViewById(R.id.friend_list_image);
+      holder.friendListImage = (SimpleDraweeView) convertView.findViewById(R.id.friend_list_image);
             holder.friendListPlace= (TextView) convertView.findViewById(R.id.friend_list_place);
               holder.friendListPhonenum= (TextView) convertView.findViewById(R.id.friend_list_phonenum);
              holder.friendListName= (TextView) convertView.findViewById(R.id.friend_list_name);
@@ -65,14 +64,19 @@ public class SecondFragAdapter extends BaseAdapter {
 
         }else{
           holder= (MyViewHolder) convertView.getTag();
+
+        }
+
+
    holder.friendListAge.setText(listbean.get(position).getAge());
    holder.friendListName.setText(listbean.get(position).getNickname());
    holder.friendListDoc.setText(listbean.get(position).getIntroduce());
      holder.friendListPlace.setText(listbean.get(position).getArea());
      holder.friendListPhonenum.setText(listbean.get(position).getPhone());
-            Glide.with(context).load(listbean.get(position).getImagePath()).into(holder.friendListImage);
+          //  Glide.with(context).load(listbean.get(position).getImagePath()).into(holder.friendListImage);
 
-        }
+        holder.friendListImage.setImageURI(listbean.get(position).getImagePath());
+
 
 
         return convertView;
@@ -83,7 +87,7 @@ public class SecondFragAdapter extends BaseAdapter {
     class MyViewHolder {
 
         @BindView(R.id.friend_list_image)
-        ImageView friendListImage;
+        SimpleDraweeView friendListImage;
         @BindView(R.id.friend_list_place)
         TextView friendListPlace;
         @BindView(R.id.friend_list_name)

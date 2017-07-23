@@ -83,7 +83,9 @@
             android:theme="@style/AppTheme.Base" />
         <activity android:name=".activirys.AllPhotoActivity" />
         <activity android:name=".activirys.AddFriendActivity" />
-        <activity android:name=".activirys.ChatActivity"></activity>
+        <activity android:name=".activirys.ChatActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
+            ></activity>
 
 
     </application>
