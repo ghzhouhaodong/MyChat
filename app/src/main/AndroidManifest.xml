@@ -36,6 +36,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".base.IApplication"
@@ -52,7 +53,6 @@
         <meta-data
             android:name="EASEMOB_APPKEY"
             android:value="1131170609115540#dliao" />
-
 
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -83,11 +83,9 @@
             android:theme="@style/AppTheme.Base" />
         <activity android:name=".activirys.AllPhotoActivity" />
         <activity android:name=".activirys.AddFriendActivity" />
-        <activity android:name=".activirys.ChatActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-            ></activity>
-
-
+        <activity
+            android:name=".activirys.ChatActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
     </application>
 
 </manifest>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+      android:orientation="vertical"
+    tools:context="com.zhd.lenovo.mychat.activirys.TextvoiceActivity">
+
+
+    <Button
+        android:id="@+id/button_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="播放"
+        tools:layout_editor_absoluteY="443dp"
+        android:layout_marginRight="-16dp"
+        app:layout_constraintRight_toRightOf="@+id/button2" />
+
+    <Button
+        android:id="@+id/button2_begin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始录制"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/button"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/button3"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="179dp" />
+
+    <Button
+        android:id="@+id/button3_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="暂停录制"
+        tools:layout_editor_absoluteY="328dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/button2" />
+</LinearLayout>

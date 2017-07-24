@@ -54,6 +54,7 @@ public class IApplication extends MobApplication {
 
         //加载so文件库
           System.loadLibrary("core");
+          System.loadLibrary("speex");
     initGreendao();
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.

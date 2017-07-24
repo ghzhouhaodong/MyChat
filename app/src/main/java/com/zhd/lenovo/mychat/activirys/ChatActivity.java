@@ -3,23 +3,21 @@ package com.zhd.lenovo.mychat.activirys;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.Editable;
-import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,6 +33,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.chat.EMVoiceMessageBody;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseEmojiconGroupEntity;
 import com.hyphenate.easeui.model.EaseDefaultEmojiconDatas;
@@ -43,14 +42,19 @@ import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenuBase;
 import com.socks.library.KLog;
 import com.zhd.lenovo.mychat.R;
+import com.zhd.lenovo.mychat.adapters.MyChatAdapter;
 import com.zhd.lenovo.mychat.base.AppManager;
 import com.zhd.lenovo.mychat.base.IActivity;
 import com.zhd.lenovo.mychat.base.IApplication;
+import com.zhd.lenovo.mychat.speex.SpeexPlayer;
+import com.zhd.lenovo.mychat.speex.SpeexRecorder;
 import com.zhd.lenovo.mychat.utils.PreferencesUtils;
+import com.zhd.lenovo.mychat.utils.SDCardUtils;
 import com.zhd.lenovo.mychat.widget.EditTextPreIme;
 import com.zhd.lenovo.mychat.widget.MyToast;
 import com.zhd.lenovo.mychat.widget.keyboard.KeyBoardHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -60,14 +64,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.zhd.lenovo.mychat.R.id.chat_btn_sendvoice;
 import static com.zhd.lenovo.mychat.widget.keyboard.KeyBoardHelper.OnKeyBoardStatusChangeListener;
 
 
-public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeListener, EditTextPreIme.EditTextListener {
+public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeListener, EditTextPreIme.EditTextListener,MyChatAdapter.OnItemClickListener{
 
     @BindView(R.id.back_login_four)
     ImageView backLoginFour;
-    @BindView(R.id.chat_btn_sendvoice)
+    @BindView(chat_btn_sendvoice)
     Button chatBtnSendvoice;
 
     @BindView(R.id.chat_btn_biaoqing)
@@ -115,6 +120,23 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                 addTextToList(txtBody.getMessage(), ME);
                 adapter.notifyDataSetChanged();
                 chatListView.setSelection(chatList.size() - 1);
+            }else if(msg.what==3){
+                String filename2= (String) msg.obj;
+      EMMessage emMessage =EMMessage.createVoiceSendMessage(filename2,20,userid);
+                EMClient.getInstance().chatManager().sendMessage(emMessage);
+              //  SpeexPlayer player = new SpeexPlayer(filename2,handler);
+               // player.startPlay();
+                addTextToList(filename2, ME);
+                adapter.notifyDataSetChanged();
+                chatListView.setSelection(chatList.size() - 1);
+
+
+            }else if(msg.what==4){
+                EMVoiceMessageBody voiceMessageBody= (EMVoiceMessageBody) msg.obj;
+                 addTextToList( voiceMessageBody.getLocalUrl(),OTHER);
+                adapter.notifyDataSetChanged();
+                chatListView.setSelection(chatList.size() - 1);
+
             }
 
 
@@ -124,7 +146,8 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
     private String userid;
     private String myid;
     private Button button;
-
+    private SpeexRecorder recorderInstance;
+    private String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +163,62 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         userid = intent.getStringExtra("userid");
         myid = PreferencesUtils.getValueByKey(this, "myid", "0");
         adapter = new MyChatAdapter(this, chatList, layout, from, to);
+
+        button = new Button(this);
+
+        button.setText(" 按住说话 ");
+        button.setGravity(Gravity.CENTER);
+        button.setPadding(5,5,5,5);
+
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        String filePath = Environment.getExternalStorageDirectory() + File.separator + SDCardUtils.DLIAO;
+                        System.out.println("filePath:" + filePath);
+                        File file = new File(filePath  + "/");
+                        System.out.println("file:" + file);
+                        if (!file.exists()) {
+                            file.mkdirs();
+                        }
+
+                        fileName = file + File.separator + System.currentTimeMillis() + ".spx";
+                        System.out.println("保存文件名：＝＝ " + fileName);
+                        recorderInstance = new SpeexRecorder(fileName, handler);
+                        Thread th = new Thread(recorderInstance);
+                        th.start();
+                        recorderInstance.setRecording(true);
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+
+
+
+
+                break;
+
+
+               case MotionEvent.ACTION_UP:
+                   recorderInstance.setRecording(false);
+
+                   System.out.println("fileName = " + new File(fileName).length());
+            Message message=new Message();
+               message.what=3;
+             message.obj=fileName;
+            handler.sendMessage(message);
+
+                break;
+
+                }
+
+
+
+
+                return true;
+            }
+        });
+
 
         chatBtnSendtext.setOnClickListener(new View.OnClickListener() {
 
@@ -233,7 +312,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         receive();
         initEmoje(null);
         initListener();
-
+      adapter.setOnItemClickListener(this);
 
         EMConversation conversation = EMClient.getInstance().chatManager().getConversation(userid);
 //获取此会话的所有消息
@@ -244,9 +323,18 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                 String to = messages.get(x).getTo();
                 String from = messages.get(x).getFrom();
                 KLog.d(to + from);
+                EMMessage.Type type = messages.get(0).getType();
+                 if(type.equals(EMMessage.Type.TXT)){
+
+
+
+
                 if (from.equals(myid) && to.equals(userid)) {
+
+
+
                     Message obtain = Message.obtain();
-                    obtain.what = 2;
+                    obtain.what = 2; //我
                     //   MyToast.makeText(IApplication.getApplication(),to+userid, Toast.LENGTH_SHORT);
                     obtain.obj = messages.get(x).getBody();
                     handler.sendMessage(obtain);
@@ -260,6 +348,31 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                     handler.sendMessage(obtain);
 
                 }
+
+                 }else if(type.equals(EMMessage.Type.VOICE)){
+                     if (from.equals(myid) && to.equals(userid)) {
+                         Message obtain = Message.obtain();
+                         obtain.what = 3;
+                         //   MyToast.makeText(IApplication.getApplication(),to+userid, Toast.LENGTH_SHORT);
+                         EMVoiceMessageBody body= (EMVoiceMessageBody) messages.get(x).getBody();
+                         obtain.obj = body.getLocalUrl();
+                         handler.sendMessage(obtain);
+                     } else if (to.equals(myid) && from.equals(userid)) {
+                         Message obtain = Message.obtain();
+                         obtain.what = 4;   //对方
+                         MyToast.makeText(IApplication.getApplication(), from + userid, Toast.LENGTH_SHORT);
+                         obtain.obj = messages.get(x).getBody();
+                         handler.sendMessage(obtain);
+                     }
+
+
+
+
+
+                 }
+
+
+
             }
 
         }
@@ -267,22 +380,18 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
 
     }
 
-    @OnClick({R.id.back_login_four, R.id.chat_btn_sendvoice, R.id.chat_btn_biaoqing, R.id.chat_btn_sendtext})
+    @OnClick({R.id.back_login_four, chat_btn_sendvoice, R.id.chat_btn_biaoqing, R.id.chat_btn_sendtext})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_login_four:
                 finish();
                 break;
-            case R.id.chat_btn_sendvoice:
+            case chat_btn_sendvoice:
 
               //  linearAddvoicebutton
                 LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(50));
   if(chatEdittext.getVisibility()==View.VISIBLE){
-      button = new Button(this);
 
-      button.setText(" 按住说话 ");
-      button.setGravity(Gravity.CENTER);
-      button.setPadding(5,5,5,5);
       chatEdittext.setVisibility(View.GONE);
       linearAddvoicebutton.addView(button,params);
   }else{
@@ -418,6 +527,9 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         }
     }
 
+
+
+
     public void receive() {
 
         //收到消息
@@ -436,15 +548,27 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                 // String s = messages.get(0).getBody().toString();
                 if (messages.get(0).getTo().equals(myid) && messages.get(0).getFrom().equals(userid)) {
 
-                    EMTextMessageBody txtBody = (EMTextMessageBody) messages.get(0).getBody();
+                    EMMessage.Type type = messages.get(0).getType();
+                     if(type.equals(EMMessage.Type.TXT)) {
+
+                         EMTextMessageBody txtBody = (EMTextMessageBody) messages.get(0).getBody();
 
 
-                    Message message = new Message();
-                    message.what = 1;
-                    message.obj = txtBody;
+                         Message message = new Message();
+                         message.what = 1;
+                         message.obj = txtBody;
+                         handler.sendMessage(message);
+
+                     }else if(type.equals(EMMessage.Type.VOICE)){
+                             EMVoiceMessageBody voiceMessageBody= (EMVoiceMessageBody) messages.get(0).getBody();
+                         Message obtain = Message.obtain();
+                            obtain.what=4;
+                            obtain.obj=voiceMessageBody;
+                           handler.sendMessage(obtain);
 
 
-                    handler.sendMessage(message);
+                     }
+
 
                     EMConversation emConversation = EMClient.getInstance().chatManager().getConversation(userid);
                     emConversation.appendMessage(messages.get(0));
@@ -498,13 +622,10 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
     @Override
     public void onBack() {
         chatEdittext.setListener(null);
-
         System.out.println("chatTitle = onBack");
         setKeyBoardModelResize();
         buttomLayoutView.setVisibility(View.GONE);
         chatBtnBiaoqing.setTag(1);
-
-
     }
 
     @Override
@@ -535,76 +656,27 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         chatList.add(map);
     }
 
+    @Override
+    public void onItemClickListener(int position, View view) {
+
+      SpeexPlayer player = new SpeexPlayer(chatList.get(position).get(from[1]).toString(),handler);
+        player.startPlay();
+
+
+    }
+
+    @Override
+    public void onItemLongClickListener(int position, View view) {
+
+
+
+    }
+
    /* @OnClick(R.id.voice_btn_chat)
     public void onClick() {
     }*/
 
-    private class MyChatAdapter extends BaseAdapter {
 
-        Context context = null;
-        ArrayList<HashMap<String, Object>> chatList = null;
-        int[] layout;
-        String[] from;
-        int[] to;
-
-
-        public MyChatAdapter(Context context,
-                             ArrayList<HashMap<String, Object>> chatList, int[] layout,
-                             String[] from, int[] to) {
-            super();
-            this.context = context;
-            this.chatList = chatList;
-            this.layout = layout;
-            this.from = from;
-            this.to = to;
-        }
-
-        @Override
-        public int getCount() {
-            // TODO Auto-generated method stub
-            return chatList.size();
-        }
-
-        @Override
-        public Object getItem(int arg0) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            // TODO Auto-generated method stub
-            return position;
-        }
-
-        class ViewHolder {
-            public ImageView imageView = null;
-            public TextView textView = null;
-
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
-            ViewHolder holder = null;
-            //获得到消息是谁发的
-            int who = (Integer) chatList.get(position).get("person");
-            //加载who的布局
-            convertView = LayoutInflater.from(context).inflate(
-                    layout[who == ME ? 0 : 1], null);
-            holder = new ViewHolder();
-            holder.imageView = (ImageView) convertView.findViewById(to[who * 2 + 0]);
-            holder.textView = (TextView) convertView.findViewById(to[who * 2 + 1]);
-
-
-            holder.imageView.setBackgroundResource((Integer) chatList.get(position).get(from[0]));
-            Spannable span = EaseSmileUtils.getSmiledText(IApplication.application, chatList.get(position).get(from[1]).toString());
-
-            holder.textView.setText(span, TextView.BufferType.SPANNABLE);
-            return convertView;
-        }
-
-    }
 
 
     private void initListener() {
