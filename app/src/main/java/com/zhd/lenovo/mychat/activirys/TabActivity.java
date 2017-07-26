@@ -1,12 +1,18 @@
 package com.zhd.lenovo.mychat.activirys;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import com.hyphenate.chat.EMClient;
 import com.zhd.lenovo.mychat.R;
 import com.zhd.lenovo.mychat.base.AppManager;
 import com.zhd.lenovo.mychat.base.IActivity;
+import com.zhd.lenovo.mychat.base.IApplication;
 import com.zhd.lenovo.mychat.fragments.tabfragment.FirstFragment;
 import com.zhd.lenovo.mychat.fragments.tabfragment.FourthFragment;
 import com.zhd.lenovo.mychat.fragments.tabfragment.SecondFragment;
@@ -19,6 +25,7 @@ import java.util.List;
 public class TabActivity extends IActivity implements ButtomLayout.OnSelectListener{
     private ButtomLayout buttomLayout;
     private FragmentManager fragmentManager;
+    private CallReceiver callReceiver;
     private List<Fragment> fragments = new ArrayList<Fragment>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,8 @@ public class TabActivity extends IActivity implements ButtomLayout.OnSelectListe
         switchFragment(0);
 
 
+        //监听来电
+        incoming();
 
     }
     public void createFragment(Bundle savedInstanceState){
@@ -77,12 +86,42 @@ public class TabActivity extends IActivity implements ButtomLayout.OnSelectListe
         switchFragment(index);
 
     }
+    public void incoming() {
+        callReceiver = new CallReceiver();
+ IntentFilter callFilter = new IntentFilter(EMClient.getInstance().callManager().getIncomingCallBroadcastAction());
+        registerReceiver(callReceiver, callFilter);
+    }
+
+
+
+
+    private class CallReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 拨打方username
+            String from = intent.getStringExtra("from");
+            // call type
+            String type = intent.getStringExtra("type");
+            //跳转到通话页面
+
+            IApplication.ring();
+
+            VideoActivity.startTelActivity(2,from,TabActivity.this);
+
+
+        }
+    }
+
+
+
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         AppManager appManager = AppManager.getAppManager();
         appManager.finishActivity(this);
-
+        unregisterReceiver(callReceiver);
     }
 }

@@ -107,6 +107,7 @@
                     android:background="@drawable/ease_type_select_btn"
                     android:paddingLeft="@dimen/margin_5dp"
                     android:paddingRight="@dimen/margin_5dp"
+                android:clickable="true"
                     />
 
                 <TextView

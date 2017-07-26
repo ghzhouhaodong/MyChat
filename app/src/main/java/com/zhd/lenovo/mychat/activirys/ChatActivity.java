@@ -1,5 +1,6 @@
 package com.zhd.lenovo.mychat.activirys;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ import com.zhd.lenovo.mychat.utils.PreferencesUtils;
 import com.zhd.lenovo.mychat.utils.SDCardUtils;
 import com.zhd.lenovo.mychat.widget.EditTextPreIme;
 import com.zhd.lenovo.mychat.widget.MyToast;
+import com.zhd.lenovo.mychat.widget.RecordButton;
 import com.zhd.lenovo.mychat.widget.keyboard.KeyBoardHelper;
 
 import java.io.File;
@@ -64,8 +66,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.view.View.inflate;
 import static com.zhd.lenovo.mychat.R.id.chat_btn_sendvoice;
 import static com.zhd.lenovo.mychat.widget.keyboard.KeyBoardHelper.OnKeyBoardStatusChangeListener;
+import static java.lang.System.currentTimeMillis;
 
 
 public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeListener, EditTextPreIme.EditTextListener,MyChatAdapter.OnItemClickListener{
@@ -122,21 +126,38 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                 chatListView.setSelection(chatList.size() - 1);
             }else if(msg.what==3){
                 String filename2= (String) msg.obj;
-      EMMessage emMessage =EMMessage.createVoiceSendMessage(filename2,20,userid);
+               int voicetime = (int) ((l2-l1)/1000);
+        if(voicetime<=1) {
+
+   MyToast.makeText(IApplication.getApplication(),"您的录音时间太短",Toast.LENGTH_SHORT);
+
+        }else{
+
+
+      EMMessage emMessage =EMMessage.createVoiceSendMessage(filename2,voicetime,userid);
                 EMClient.getInstance().chatManager().sendMessage(emMessage);
               //  SpeexPlayer player = new SpeexPlayer(filename2,handler);
                // player.startPlay();
                 addTextToList(filename2, ME);
                 adapter.notifyDataSetChanged();
                 chatListView.setSelection(chatList.size() - 1);
-
+            }
 
             }else if(msg.what==4){
+
                 EMVoiceMessageBody voiceMessageBody= (EMVoiceMessageBody) msg.obj;
                  addTextToList( voiceMessageBody.getLocalUrl(),OTHER);
                 adapter.notifyDataSetChanged();
                 chatListView.setSelection(chatList.size() - 1);
 
+            }else if(msg.what==5){
+                voiceValue = (double) msg.obj;
+  if(isCanceled){
+
+  }else{
+      setDialogImage();
+
+  }
             }
 
 
@@ -145,9 +166,18 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
     };
     private String userid;
     private String myid;
-    private Button button;
+   // private Button button;
+     private RecordButton button;
+
     private SpeexRecorder recorderInstance;
     private String fileName;
+    private View jiaview ;
+    private long l1=5;
+    private long l2=5;
+    private boolean isCanceled = false; // 是否取消录音
+    private float downY;
+    private float downX;
+    private double voiceValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +185,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
         chatList = new ArrayList<HashMap<String, Object>>();
+
        /* addTextToList("不管你是谁", ME);
         addTextToList("群发的我不回\n  ^_^", OTHER);
         addTextToList("哈哈哈哈", ME);
@@ -164,7 +195,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         myid = PreferencesUtils.getValueByKey(this, "myid", "0");
         adapter = new MyChatAdapter(this, chatList, layout, from, to);
 
-        button = new Button(this);
+        button = new RecordButton(this);
 
         button.setText(" 按住说话 ");
         button.setGravity(Gravity.CENTER);
@@ -175,31 +206,52 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        showVoiceDialog(0);
+
+                        isCanceled = false;
+                        downY = event.getY();
+                       downX =  event.getX();
                         String filePath = Environment.getExternalStorageDirectory() + File.separator + SDCardUtils.DLIAO;
                         System.out.println("filePath:" + filePath);
                         File file = new File(filePath  + "/");
                         System.out.println("file:" + file);
                         if (!file.exists()) {
-                            file.mkdirs();
-                        }
+                        file.mkdirs();
+                    }
 
-                        fileName = file + File.separator + System.currentTimeMillis() + ".spx";
+                        fileName = file + File.separator + currentTimeMillis() + ".spx";
                         System.out.println("保存文件名：＝＝ " + fileName);
                         recorderInstance = new SpeexRecorder(fileName, handler);
                         Thread th = new Thread(recorderInstance);
                         th.start();
+                        l1 = System.currentTimeMillis();
                         recorderInstance.setRecording(true);
 
                         break;
                     case MotionEvent.ACTION_MOVE:
 
-
-
+                        float moveX =event.getX();
+                        float moveY = event.getY();
+                        if (downY - moveY > 50) {
+                            isCanceled = true;
+                            showVoiceDialog(1);
+                        }
+                        if (downY - moveY < 20) {
+                            isCanceled = false;
+                            showVoiceDialog(0);
+                        }
 
                 break;
 
-
                case MotionEvent.ACTION_UP:
+                   button.setText(" 按住说话 ");
+                   if (mRecordDialog.isShowing()) {
+                       mRecordDialog.dismiss();
+                   }
+
+               if(isCanceled==false){
+                   l2 = System.currentTimeMillis();
+
                    recorderInstance.setRecording(false);
 
                    System.out.println("fileName = " + new File(fileName).length());
@@ -207,7 +259,10 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                message.what=3;
              message.obj=fileName;
             handler.sendMessage(message);
+               }else{
 
+
+               }
                 break;
 
                 }
@@ -259,7 +314,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                 if (chatEdittext.getText().length() > 0) {
 
                     chatBtnSendtext.setVisibility(View.VISIBLE);
-                    chatBtnJia.setVisibility(View.INVISIBLE);
+                    chatBtnJia.setVisibility(View.GONE);
 
                 } else {
                     chatBtnSendtext.setVisibility(View.INVISIBLE);
@@ -308,6 +363,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
             }
         });
         chatBtnBiaoqing.setTag(1);
+        chatBtnJia.setTag(1);
         chatListView.setAdapter(adapter);
         receive();
         initEmoje(null);
@@ -364,23 +420,20 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                          obtain.obj = messages.get(x).getBody();
                          handler.sendMessage(obtain);
                      }
-
-
-
-
-
                  }
-
-
-
             }
-
         }
-
-
     }
 
-    @OnClick({R.id.back_login_four, chat_btn_sendvoice, R.id.chat_btn_biaoqing, R.id.chat_btn_sendtext})
+
+
+
+
+
+
+
+
+    @OnClick({R.id.back_login_four, chat_btn_sendvoice, R.id.chat_btn_biaoqing, R.id.chat_btn_sendtext,R.id.chat_btn_jia})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.back_login_four:
@@ -394,6 +447,8 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
 
       chatEdittext.setVisibility(View.GONE);
       linearAddvoicebutton.addView(button,params);
+      hidenKeyBoard(chatEdittext);
+
   }else{
       linearAddvoicebutton.removeView(button);
      chatEdittext.setVisibility(View.VISIBLE);
@@ -402,6 +457,8 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
   }
                 break;
             case R.id.chat_btn_biaoqing:
+
+
                 chatEdittext.setListener(null);
                 setKeyBoardModelPan();
                 int tag = (int) chatBtnBiaoqing.getTag();
@@ -410,7 +467,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                     buttomLayoutView.setVisibility(View.VISIBLE);
                     chatBtnBiaoqing.setTag(2);
                     hidenKeyBoard(chatEdittext);
-
+                   initem();
 
                 } else {
                     chatBtnBiaoqing.setTag(1);
@@ -422,9 +479,58 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
 
                 break;
             case R.id.chat_btn_jia:
+               initView();
+                chatEdittext.setListener(null);
+                setKeyBoardModelPan();
+                int tag2 = (int) chatBtnJia.getTag();
+                if (tag2 == 1) {
+                    // 显示表情
+                    buttomLayoutView.setVisibility(View.VISIBLE);
+                    chatBtnJia.setTag(2);
+                    hidenKeyBoard(chatEdittext);
 
 
+                } else {
+                    chatBtnJia.setTag(1);
+                    // showKeyBoard(chatEdittext);
+                    change();
+
+                }
                 break;
+        }
+    }
+
+    private void initem() {
+
+     if(emojiconMenu.getVisibility()==View.GONE){
+         jiaview.setVisibility(View.GONE);
+         emojiconMenu.setVisibility(View.VISIBLE);
+
+
+     }
+
+
+    }
+
+    //添加加号的布局
+    private void initView() {
+        if(jiaview==null){
+            jiaview = View.inflate(this, R.layout.chatlist_jiaview,null);
+              Button chatlistphone = (Button) jiaview.findViewById(R.id.chatlist_jiaphone);
+            chatlistphone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //startTelActivity(int type, String uid, Context context)
+     VideoActivity.startTelActivity(1,userid,ChatActivity.this);
+
+                }
+            });
+            emojiconMenu.setVisibility(View.GONE);
+            buttomLayoutView.addView(jiaview);
+
+        }else  if( jiaview.getVisibility()==View.GONE){
+            emojiconMenu.setVisibility(View.GONE);
+            jiaview.setVisibility(View.VISIBLE);
         }
     }
 
@@ -607,7 +713,38 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
 
 
     }
-
+    // 录音Dialog图片随录音音量大小切换
+    private void setDialogImage() {
+        if (voiceValue < 10.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_01);
+        } else if (voiceValue > 10.0 && voiceValue < 20.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_02);
+        } else if (voiceValue > 20.0 && voiceValue < 30.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_03);
+        } else if (voiceValue > 30.0 && voiceValue < 40.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_04);
+        } else if (voiceValue > 40.0 && voiceValue < 50.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_05);
+        } else if (voiceValue > 50.0 && voiceValue < 55.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_06);
+        } else if (voiceValue > 55.0 && voiceValue < 60.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_07);
+        } else if (voiceValue > 60.0 && voiceValue < 65.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_08);
+        } else if (voiceValue > 65.0 && voiceValue < 70.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_09);
+        } else if (voiceValue > 70.0 && voiceValue < 75.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_10);
+        } else if (voiceValue > 75.0 && voiceValue < 80.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_11);
+        } else if (voiceValue > 80.0 && voiceValue < 85.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_12);
+        } else if (voiceValue > 85.0 && voiceValue < 90.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_13);
+        } else if (voiceValue > 90.0) {
+            dialogImg.setImageResource(R.drawable.record_animate_14);
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -626,6 +763,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         setKeyBoardModelResize();
         buttomLayoutView.setVisibility(View.GONE);
         chatBtnBiaoqing.setTag(1);
+        chatBtnJia.setTag(1);
     }
 
     @Override
@@ -636,7 +774,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
             if (buttomLayoutView.getVisibility() == View.VISIBLE) {
                 buttomLayoutView.setVisibility(View.GONE);
                 chatBtnBiaoqing.setTag(1);
-
+                 chatBtnJia.setTag(1);
                 return false;
             } else {
                 return super.onKeyDown(keyCode, event);
@@ -655,9 +793,55 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         map.put("text", text);
         chatList.add(map);
     }
+     protected  void addVoiceToList(){
+       HashMap<String,Object> map =new HashMap<String,Object>();
+       HashMap<String,Object> map1=new HashMap<String,Object>();
+
+
+
+
+     }
+
+
+
+    private TextView dialogTextView;
+    private ImageView dialogImg;
+    private Dialog mRecordDialog;
+    // 录音时显示Dialog
+    private void showVoiceDialog(int flag) {
+        if (mRecordDialog == null) {
+            mRecordDialog = new Dialog(ChatActivity.this, R.style.Dialogstyle);
+            mRecordDialog.setContentView(R.layout.dialog_record);
+            dialogImg = (ImageView) mRecordDialog
+                    .findViewById(R.id.record_dialog_img);
+            dialogTextView = (TextView) mRecordDialog
+                    .findViewById(R.id.record_dialog_txt);
+        }
+        switch (flag) {
+            case 1:
+                dialogImg.setImageResource(R.drawable.record_cancel);
+                dialogTextView.setText("松开手指可取消录音");
+                button.setText("松开手指 取消录音");
+                break;
+
+            default:
+                dialogImg.setImageResource(R.drawable.record_animate_01);
+                dialogTextView.setText("向上滑动可取消录音");
+                button.setText("松开手指 完成录音");
+                break;
+        }
+        dialogTextView.setTextSize(14);
+        mRecordDialog.show();
+    }
+
+
+
 
     @Override
     public void onItemClickListener(int position, View view) {
+
+
+
 
       SpeexPlayer player = new SpeexPlayer(chatList.get(position).get(from[1]).toString(),handler);
         player.startPlay();
@@ -707,13 +891,16 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
     private void initEmoje(List<EaseEmojiconGroupEntity> emojiconGroupList) {
 
         if (emojiconMenu == null) {
-            emojiconMenu = (EaseEmojiconMenu) View.inflate(ChatActivity.this, com.hyphenate.easeui.R.layout.ease_layout_emojicon_menu, null);
+            emojiconMenu = (EaseEmojiconMenu) inflate(ChatActivity.this, com.hyphenate.easeui.R.layout.ease_layout_emojicon_menu, null);
             if (emojiconGroupList == null) {
                 emojiconGroupList = new ArrayList<EaseEmojiconGroupEntity>();
                 emojiconGroupList.add(new EaseEmojiconGroupEntity(com.hyphenate.easeui.R.drawable.ee_1, Arrays.asList(EaseDefaultEmojiconDatas.getData())));
             }
             ((EaseEmojiconMenu) emojiconMenu).init(emojiconGroupList);
         }
+
+
+
         buttomLayoutView.addView(emojiconMenu);
     }
 

@@ -33,9 +33,12 @@ public class SpeexPlayer {
 
 		Thread th = new Thread(rpt);
 		th.start();
+
 	}
-	
+
 	public void stopPlay(boolean release){
+
+
 		speexdec.isStop = true ;
 		speexdec.releaseMusic = release;
 		System.err.println("stopPlay stop ");

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.zhd.lenovo.mychat.activirys.VideoActivity">
+  <com.hyphenate.media.EMCallSurfaceView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:id="@+id/surface_big"
+
+      />
+  <com.hyphenate.media.EMCallSurfaceView
+      android:layout_marginLeft="10dp"
+      android:layout_width="150dp"
+      android:layout_height="200dp"
+       android:id="@+id/surface_small"
+
+
+      />
+
+<LinearLayout
+    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:gravity="center"
+    >
+   <Button
+       android:layout_width="70dp"
+       android:layout_height="70dp"
+       android:background="@drawable/ic_tel_answer"
+     android:id="@+id/tel_activity_accept"
+
+       />
+
+
+
+
+ <Button
+     android:layout_width="70dp"
+     android:layout_height="70dp"
+     android:background="@drawable/ic_tel_ring_off2"
+       android:id="@+id/tel_activity_handup"
+
+     />
+   <Button
+       android:layout_width="70dp"
+       android:layout_height="70dp"
+       android:background="@drawable/ic_tel_ring_off2"
+       android:id="@+id/tel_activity_disaccept"
+
+       />
+
+
+</LinearLayout>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="通话中"
+    android:layout_centerInParent="true"
+     android:id="@+id/tel_activity_hint"
+    />
+
+
+
+</RelativeLayout>

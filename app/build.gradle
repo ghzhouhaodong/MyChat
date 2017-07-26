@@ -38,6 +38,7 @@ android {
         main {
             jniLibs.srcDirs = ['libs']
 
+            res.srcDirs = ['src/main/res', 'src/main/raw']
         }
 
 
@@ -61,8 +62,8 @@ dependencies {
     })
     // add library
     compile project(':library')
-    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
     compile project(':easeui')
+    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
     compile 'com.github.385841539:HorizontalScrollSelectedView:1.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:25.3.1'

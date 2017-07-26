@@ -82,7 +82,7 @@ public  class MyChatAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.imageView = (ImageView) convertView.findViewById(to[who * 2 + 0]);
             holder.textView = (TextView) convertView.findViewById(to[who * 2 + 1]);
-
+             holder.textView.setText("语音");
 
             holder.imageView.setBackgroundResource((Integer) chatList.get(position).get(from[0]));
             if(chatList.get(position).get(from[1]).toString().endsWith(".spx")){
