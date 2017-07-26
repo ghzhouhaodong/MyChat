@@ -24,6 +24,7 @@ import com.zhd.lenovo.mychat.bean.FriendDataBean;
 import com.zhd.lenovo.mychat.daoutils.FriendDataDaoUtils;
 import com.zhd.lenovo.mychat.mview.SecondFragmentView;
 import com.zhd.lenovo.mychat.presenter.SecondFramgentPresenter;
+import com.zhd.lenovo.mychat.utils.PreferencesUtils;
 import com.zhd.lenovo.mychat.widget.MyToast;
 
 import java.util.ArrayList;
@@ -80,8 +81,10 @@ public class SecondFragment extends BaseFragment<SecondFragmentView, SecondFramg
               @Override
               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                   int userId = queryalllist.get(position-1).getUserId();
+                  PreferencesUtils.addConfigInfo(IApplication.getApplication(),"imageforother",queryalllist.get(position-1).getImagePath());
                   Intent intent=new Intent(getActivity(),ChatActivity.class);
           intent.putExtra("userid",userId+"");
+
             startActivity(intent);
 
 

@@ -48,7 +48,7 @@ public class LoginActivityModelImpl implements LoginActivityModel{
                     PreferencesUtils.addConfigInfo(IApplication.getApplication(),"password",loginBean.getData().getPassword());
                   PreferencesUtils.addConfigInfo(IApplication.getApplication(),"yxpassword",loginBean.getData().getYxpassword());
                  PreferencesUtils.addConfigInfo(IApplication.getApplication(),"uid",loginBean.getData().getUserId()+"");
-                  //  MyToast.makeText(IApplication.getApplication(),""+loginBean.getData().getNickname()+"已登录", Toast.LENGTH_SHORT);
+                    PreferencesUtils.addConfigInfo(IApplication.getApplication(),"imageforme",loginBean.getData().getImagePath());
 
     listener.Success("登录成功",""+loginBean.getData().getNickname()+"已登录",loginBean.getData().getUserId()+"");
 

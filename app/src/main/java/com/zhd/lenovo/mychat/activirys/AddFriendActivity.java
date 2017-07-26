@@ -40,7 +40,8 @@ public class AddFriendActivity extends IActivity {
         Intent intent = getIntent();
 
         friendId = intent.getStringExtra("friendId");
-            String nickname=   intent.getStringExtra("nickname");
+
+        String nickname=   intent.getStringExtra("nickname");
         addFriendText.setText("   确认添加"+nickname+"为好友吗？");
 
     }

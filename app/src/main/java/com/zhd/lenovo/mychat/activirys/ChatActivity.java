@@ -178,6 +178,8 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
     private float downY;
     private float downX;
     private double voiceValue;
+    private String imageforme;
+    private String imageforother;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,6 +187,10 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
         chatList = new ArrayList<HashMap<String, Object>>();
+
+        imageforother = PreferencesUtils.getValueByKey(IApplication.getApplication(),"imageforother","");
+        imageforme = PreferencesUtils.getValueByKey(IApplication.getApplication(),"imageforme","");
+     //MyToast.makeText(this,imageforme+imageforother,Toast.LENGTH_SHORT);
 
        /* addTextToList("不管你是谁", ME);
         addTextToList("群发的我不回\n  ^_^", OTHER);
@@ -399,7 +405,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                 } else if (to.equals(myid) && from.equals(userid)) {
                     Message obtain = Message.obtain();
                     obtain.what = 1;   //对方
-                    MyToast.makeText(IApplication.getApplication(), from + userid, Toast.LENGTH_SHORT);
+                //MyToast.makeText(IApplication.getApplication(), from + userid, Toast.LENGTH_SHORT);
                     obtain.obj = messages.get(x).getBody();
                     handler.sendMessage(obtain);
 
@@ -416,7 +422,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                      } else if (to.equals(myid) && from.equals(userid)) {
                          Message obtain = Message.obtain();
                          obtain.what = 4;   //对方
-                         MyToast.makeText(IApplication.getApplication(), from + userid, Toast.LENGTH_SHORT);
+                      //   MyToast.makeText(IApplication.getApplication(), from + userid, Toast.LENGTH_SHORT);
                          obtain.obj = messages.get(x).getBody();
                          handler.sendMessage(obtain);
                      }
@@ -789,7 +795,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
     protected void addTextToList(String text, int who) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("person", who);
-        map.put("image", who == ME ? R.drawable.ic_launcher : R.drawable.ic_launcher);
+        map.put("image", who == ME ? imageforme : imageforother);
         map.put("text", text);
         chatList.add(map);
     }

@@ -36,6 +36,7 @@ import com.zhd.lenovo.mychat.mview.MonitorScrollView;
 import com.zhd.lenovo.mychat.mview.MyHorizontalScrollView;
 import com.zhd.lenovo.mychat.presenter.FirstFragmentItemPresenter;
 import com.zhd.lenovo.mychat.utils.NetUtil;
+import com.zhd.lenovo.mychat.utils.PreferencesUtils;
 import com.zhd.lenovo.mychat.widget.MyToast;
 
 import java.util.ArrayList;
@@ -82,6 +83,8 @@ public class ItemContentActivity extends BaseMvpActivity<FirstFragmentItemView, 
         Intent intent = getIntent();
         userid = intent.getIntExtra("userid", 0);
         imgepath = intent.getStringExtra("imagepath");
+        PreferencesUtils.addConfigInfo(IApplication.getApplication(),"imageforother",imgepath);
+
         Glide.with(this).load(imgepath).into(ivPic);
 
 

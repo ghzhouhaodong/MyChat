@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.hyphenate.easeui.utils.EaseSmileUtils;
 import com.zhd.lenovo.mychat.base.IApplication;
 
@@ -84,7 +85,8 @@ public  class MyChatAdapter extends BaseAdapter {
             holder.textView = (TextView) convertView.findViewById(to[who * 2 + 1]);
              holder.textView.setText("语音");
 
-            holder.imageView.setBackgroundResource((Integer) chatList.get(position).get(from[0]));
+            Glide.with(context).load(chatList.get(position).get(from[0])).into(holder.imageView);
+           // holder.imageView.setBackgroundResource((Integer) chatList.get(position).get(from[0]));
             if(chatList.get(position).get(from[1]).toString().endsWith(".spx")){
 
 
