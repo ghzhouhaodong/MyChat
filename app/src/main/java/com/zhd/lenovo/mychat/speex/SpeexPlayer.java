@@ -4,6 +4,7 @@
 package com.zhd.lenovo.mychat.speex;
 
 import android.os.Handler;
+import android.os.Message;
 
 import java.io.File;
 
@@ -13,6 +14,17 @@ public class SpeexPlayer {
 	private Handler handler ;
 	private long sendtimer ;
 	private long atimer ;
+   boolean  isPlay = false;
+   public boolean isPlay(){
+	 if(isPlay){
+		 return true;
+	 }else{
+
+		return  false;
+	 }
+
+   }
+
 
 
 	public SpeexPlayer(String fileName,Handler handler) {
@@ -33,6 +45,12 @@ public class SpeexPlayer {
 
 		Thread th = new Thread(rpt);
 		th.start();
+      isPlay=true;
+		Message message = handler.obtainMessage();
+		message.obj=isPlay;
+		message.what=6;
+		handler.sendMessage(message);
+
 
 	}
 
@@ -42,10 +60,15 @@ public class SpeexPlayer {
 		speexdec.isStop = true ;
 		speexdec.releaseMusic = release;
 		System.err.println("stopPlay stop ");
+      isPlay=false;
 
+		Message message = handler.obtainMessage();
+ message.obj=isPlay;
+  message.what=6;
+		handler.sendMessage(message);
 	}
 
-	boolean isPlay = true;
+
 
 	class RecordPlayThread extends Thread {
 

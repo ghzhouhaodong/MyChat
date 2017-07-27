@@ -3,6 +3,7 @@ package com.zhd.lenovo.mychat.activirys;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -61,6 +62,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,6 +99,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
     ArrayList<HashMap<String, Object>> chatList = null;
     String[] from = {"image", "text"};
     int[] to = {R.id.chatlist_image_me, R.id.chatlist_text_me, R.id.chatlist_image_other, R.id.chatlist_text_other};
+
     int[] layout = {R.layout.chatlist_for_me, R.layout.chatlist_for_you};
     String userQQ = null;
     @BindView(R.id.chat_edittext)
@@ -135,10 +139,12 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
 
 
       EMMessage emMessage =EMMessage.createVoiceSendMessage(filename2,voicetime,userid);
+
                 EMClient.getInstance().chatManager().sendMessage(emMessage);
               //  SpeexPlayer player = new SpeexPlayer(filename2,handler);
                // player.startPlay();
-                addTextToList(filename2, ME);
+
+            addVoiceToList(filename2,voicetime+"",ME);              //  addTextToList(filename2, ME);
                 adapter.notifyDataSetChanged();
                 chatListView.setSelection(chatList.size() - 1);
             }
@@ -146,7 +152,9 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
             }else if(msg.what==4){
 
                 EMVoiceMessageBody voiceMessageBody= (EMVoiceMessageBody) msg.obj;
-                 addTextToList( voiceMessageBody.getLocalUrl(),OTHER);
+
+                addVoiceToList(voiceMessageBody.getLocalUrl(),voiceMessageBody.getLength()+"",OTHER);
+
                 adapter.notifyDataSetChanged();
                 chatListView.setSelection(chatList.size() - 1);
 
@@ -158,6 +166,12 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
       setDialogImage();
 
   }
+            }else if(msg.what==6){
+
+                isplay = (boolean) msg.obj;
+
+
+
             }
 
 
@@ -172,7 +186,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
     private SpeexRecorder recorderInstance;
     private String fileName;
     private View jiaview ;
-    private long l1=5;
+    private long l1=3;
     private long l2=5;
     private boolean isCanceled = false; // 是否取消录音
     private float downY;
@@ -180,6 +194,7 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
     private double voiceValue;
     private String imageforme;
     private String imageforother;
+    private boolean isplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -388,19 +403,13 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                 EMMessage.Type type = messages.get(0).getType();
                  if(type.equals(EMMessage.Type.TXT)){
 
-
-
-
                 if (from.equals(myid) && to.equals(userid)) {
-
-
 
                     Message obtain = Message.obtain();
                     obtain.what = 2; //我
                     //   MyToast.makeText(IApplication.getApplication(),to+userid, Toast.LENGTH_SHORT);
                     obtain.obj = messages.get(x).getBody();
                     handler.sendMessage(obtain);
-
 
                 } else if (to.equals(myid) && from.equals(userid)) {
                     Message obtain = Message.obtain();
@@ -797,16 +806,18 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         map.put("person", who);
         map.put("image", who == ME ? imageforme : imageforother);
         map.put("text", text);
+        map.put("flag","1");
         chatList.add(map);
     }
-     protected  void addVoiceToList(){
-       HashMap<String,Object> map =new HashMap<String,Object>();
-       HashMap<String,Object> map1=new HashMap<String,Object>();
-
-
-
-
-     }
+     protected  void addVoiceToList(String text,String time, int who){
+        HashMap<String,Object> map =new HashMap<String,Object>();
+        map.put("person",who);
+        map.put("image", who == ME ? imageforme : imageforother);
+        map.put("voicetext", text);
+        map.put("voicetime",time);
+        map.put("flag","2");
+        chatList.add(map);
+    }
 
 
 
@@ -842,15 +853,50 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
 
 
 
-
     @Override
-    public void onItemClickListener(int position, View view) {
+    public void onItemClickListener(int position, View view,String time,final AnimationDrawable animationDrawable) {
+
+        int mytime = Integer.parseInt(time) ;
+
+
+        animationDrawable.start();
+        Timer timer =new Timer();
+        TimerTask timerTask=new TimerTask() {
+            @Override
+            public void run() {
+                animationDrawable.stop();
+
+
+            }
+        } ;
+        timer.schedule(timerTask,mytime*1000);
 
 
 
 
-      SpeexPlayer player = new SpeexPlayer(chatList.get(position).get(from[1]).toString(),handler);
-        player.startPlay();
+        final SpeexPlayer player = new SpeexPlayer(chatList.get(position).get("voicetext").toString(),handler);
+
+         if(isplay){
+           MyToast.makeText(ChatActivity.this,"有语音在播放",Toast.LENGTH_SHORT);
+
+         }else{
+             player.startPlay();
+             Timer timer2 =new Timer();
+             TimerTask timerTask2=new TimerTask() {
+                 @Override
+                 public void run() {
+                    player.stopPlay(true);
+
+
+                 }
+             } ;
+             timer2.schedule(timerTask2,mytime*1000);
+
+
+         }
+
+
+
 
 
     }
