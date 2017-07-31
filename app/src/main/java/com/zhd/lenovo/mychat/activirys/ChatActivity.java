@@ -532,6 +532,30 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         if(jiaview==null){
             jiaview = View.inflate(this, R.layout.chatlist_jiaview,null);
               Button chatlistphone = (Button) jiaview.findViewById(R.id.chatlist_jiaphone);
+             Button chatlist_photo= (Button) jiaview.findViewById(R.id.chatlist_jia_photo);
+             Button chatlist_album= (Button) jiaview.findViewById(R.id.chatlist_jia_album);
+     chatlist_photo.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+      //跳转到相机
+
+
+
+         }
+     });
+      chatlist_album.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+        //跳转到手机相册
+
+
+
+
+          }
+      });
+
+
+
             chatlistphone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

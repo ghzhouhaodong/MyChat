@@ -138,8 +138,4 @@
             android:background="#ffffff"
             android:visibility="gone"
             />
-
-
-
-
 </LinearLayout>

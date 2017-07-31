@@ -1,8 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
+    lintOptions {
+        disable "ResourceType"
+    }
 
-
+    signingConfigs {
+        config {
+        }
+    }
     useLibrary 'org.apache.http.legacy'
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
@@ -25,13 +31,15 @@ android {
             abiFilters 'armeabi', 'x86', 'x86_64', 'arm64-v8a'
         }
     }
-
-
-
     buildTypes {
         release {
+            //是否混淆
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //移除无用的resource文件
+         //   shrinkResources true
+
+
         }
     }
     sourceSets {
@@ -48,8 +56,6 @@ android {
         targetGenDir 'src/main/java'
         schemaVersion 1
     }
-
-
 }
 
 dependencies {
