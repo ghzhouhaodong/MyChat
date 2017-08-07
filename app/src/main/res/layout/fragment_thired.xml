@@ -2,9 +2,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.zhd.lenovo.mychat.fragments.tabfragment.ThiredFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/backgroud"
+        android:id="@+id/relat_backgroud_thread"
 
-    <!-- TODO: Update blank fragment layout -->
+        >
+
+        <TextView
+            android:id="@+id/change_mode"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="朋友圈"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:layout_marginRight="10dp"
+            />
+    </RelativeLayout>
+<com.liaoinstan.springview.widget.SpringView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     android:id="@+id/thired_frag_springview"
+    >
+    <android.support.v7.widget.RecyclerView
+        android:background="@color/colorwrite"
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+
+
+</com.liaoinstan.springview.widget.SpringView>
 
 
 </LinearLayout>

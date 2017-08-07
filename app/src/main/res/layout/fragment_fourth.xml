@@ -45,6 +45,27 @@
        android:background="@drawable/selecter_but"
       android:id="@+id/quit_login"
        />
+  <Button
+      android:layout_marginTop="20dp"
+      android:textColor="@color/colorwrite"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="主播"
+      android:background="@drawable/selecter_but"
+      android:id="@+id/Fourth_show"
+
+      />
+    <Button
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorwrite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="观看"
+        android:background="@drawable/selecter_but"
+        android:id="@+id/Fourth_watch"
+
+        />
+
 
 
 </LinearLayout>

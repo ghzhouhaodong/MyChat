@@ -258,7 +258,7 @@ public class ItemContentActivity extends BaseMvpActivity<FirstFragmentItemView, 
                  //添加好友
                     button.setGravity(Gravity.CENTER);
                     button.setPadding(5,5,5,5);
-                    button.setBackgroundColor( getResources().getColor(R.color.backgroud));
+                    button.setBackgroundColor( getResources().getColor(R.color.backgrouditem));
                     llContent.addView(button);
          button.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -320,7 +320,7 @@ public class ItemContentActivity extends BaseMvpActivity<FirstFragmentItemView, 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        toolbar.setBackgroundResource(R.color.backgroud);
+
 
         return super.onKeyDown(keyCode, event);
     }

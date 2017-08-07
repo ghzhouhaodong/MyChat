@@ -73,7 +73,7 @@ public class RetrofitManager {
 
         String sign =  JNICore.getSign(SortUtils.getMapResult(SortUtils.sortString(map))) ;
         map.put("user.sign",sign);
-
+        System.out.println("sign = " + sign);
           apiService.post(url,map).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                   .subscribe(observer);

@@ -34,8 +34,12 @@ public class FourthFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.quit_login)
     Button quitLogin;
-  @BindView(R.id.myname_frag_four)
+    @BindView(R.id.myname_frag_four)
     TextView myname_txt;
+    @BindView(R.id.Fourth_show)
+    Button FourthShow;
+    @BindView(R.id.Fourth_watch)
+    Button FourthWatch;
 
     public FourthFragment() {
         // Required empty public constructor
@@ -47,15 +51,17 @@ public class FourthFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fourth, container, false);
+
+
         unbinder = ButterKnife.bind(this, view);
-               String myname= PreferencesUtils.getValueByKey(getActivity(),"myname","未登录");
-              myname_txt.setText(myname);
-      boolean islogin=   PreferencesUtils.getValueByKey(getActivity(),"islogin",false);
-        if(islogin){
+        String myname = PreferencesUtils.getValueByKey(getActivity(), "myname", "未登录");
+        myname_txt.setText(myname);
+        boolean islogin = PreferencesUtils.getValueByKey(getActivity(), "islogin", false);
+        if (islogin) {
             quitLogin.setVisibility(view.VISIBLE);
 
-        }else{
-         quitLogin.setVisibility(view.GONE);
+        } else {
+            quitLogin.setVisibility(view.GONE);
 
         }
 
@@ -70,7 +76,7 @@ public class FourthFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.btn_save_photo, R.id.quit_login})
+    @OnClick({R.id.btn_save_photo, R.id.quit_login,R.id.Fourth_show, R.id.Fourth_watch})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_save_photo:
@@ -81,14 +87,29 @@ public class FourthFragment extends Fragment {
 
 
                 boolean b = new CookiesManager(IApplication.application).removeAllCookie();
-               if(b){
-                   PreferencesUtils.addConfigInfo(getActivity(),"islogin",false);
-                   MyToast.makeText(IApplication.getApplication(),"退出登录", Toast.LENGTH_SHORT);
+                if (b) {
+                    PreferencesUtils.addConfigInfo(getActivity(), "islogin", false);
+                    MyToast.makeText(IApplication.getApplication(), "退出登录", Toast.LENGTH_SHORT);
 
-               }
+                }
 
 
                 break;
+            case R.id.Fourth_show:
+
+
+
+
+                break;
+            case R.id.Fourth_watch:
+
+
+                break;
+
+
         }
     }
+
+
+
 }

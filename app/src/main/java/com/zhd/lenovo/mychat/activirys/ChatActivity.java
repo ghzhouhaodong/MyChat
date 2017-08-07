@@ -3,11 +3,15 @@ package com.zhd.lenovo.mychat.activirys;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -32,6 +36,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessageBody;
 import com.hyphenate.chat.EMTextMessageBody;
@@ -50,6 +55,8 @@ import com.zhd.lenovo.mychat.base.IActivity;
 import com.zhd.lenovo.mychat.base.IApplication;
 import com.zhd.lenovo.mychat.speex.SpeexPlayer;
 import com.zhd.lenovo.mychat.speex.SpeexRecorder;
+import com.zhd.lenovo.mychat.utils.Constants;
+import com.zhd.lenovo.mychat.utils.ImageResizeUtils;
 import com.zhd.lenovo.mychat.utils.PreferencesUtils;
 import com.zhd.lenovo.mychat.utils.SDCardUtils;
 import com.zhd.lenovo.mychat.widget.EditTextPreIme;
@@ -58,6 +65,12 @@ import com.zhd.lenovo.mychat.widget.RecordButton;
 import com.zhd.lenovo.mychat.widget.keyboard.KeyBoardHelper;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -76,6 +89,14 @@ import static java.lang.System.currentTimeMillis;
 
 
 public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeListener, EditTextPreIme.EditTextListener,MyChatAdapter.OnItemClickListener{
+    static final int INTENTFORCAMERA = 1 ;
+    static final int INTENTFORPHOTO = 2 ;
+    public String LocalPhotoName;
+    public String createLocalPhotoName() {
+        LocalPhotoName = System.currentTimeMillis() + "face.jpg";
+        return  LocalPhotoName ;
+    }
+
 
     @BindView(R.id.back_login_four)
     ImageView backLoginFour;
@@ -115,7 +136,6 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
 
-
                 EMTextMessageBody txtBody = (EMTextMessageBody) msg.obj;
 
                 addTextToList(txtBody.getMessage(), OTHER);
@@ -136,8 +156,6 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
    MyToast.makeText(IApplication.getApplication(),"您的录音时间太短",Toast.LENGTH_SHORT);
 
         }else{
-
-
       EMMessage emMessage =EMMessage.createVoiceSendMessage(filename2,voicetime,userid);
 
                 EMClient.getInstance().chatManager().sendMessage(emMessage);
@@ -169,6 +187,22 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
             }else if(msg.what==6){
 
                 isplay = (boolean) msg.obj;
+            }else if(msg.what==7){
+        EMImageMessageBody body= (EMImageMessageBody) msg.obj;
+                String localUrl = body.getLocalUrl();
+           addPhotoToList("text",localUrl,ME);
+
+
+
+            }else if(msg.what==8){
+                //加载对方的
+                EMImageMessageBody body= (EMImageMessageBody) msg.obj;
+                String localUrl = body.getLocalUrl();
+                String url=body.getLocalUrl();
+                MyToast.makeText(ChatActivity.this,"url"+url,Toast.LENGTH_LONG);
+
+                addPhotoToList("text",localUrl,OTHER);
+
 
 
 
@@ -435,6 +469,32 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                          obtain.obj = messages.get(x).getBody();
                          handler.sendMessage(obtain);
                      }
+                 }else if(type.equals(EMMessage.Type.IMAGE)){
+          if(from.equals(myid) && to.equals(userid)){
+              Message obtain = Message.obtain();
+              obtain.what = 7;
+              //   MyToast.makeText(IApplication.getApplication(),to+userid, Toast.LENGTH_SHORT);
+                 EMImageMessageBody body= (EMImageMessageBody) messages.get(x).getBody();
+              obtain.obj = body;
+              handler.sendMessage(obtain);
+
+
+
+          }else if(to.equals(myid) && from.equals(userid)){
+              Message obtain = Message.obtain();
+              obtain.what = 8; //对方
+              //   MyToast.makeText(IApplication.getApplication(),to+userid, Toast.LENGTH_SHORT);
+              EMImageMessageBody body= (EMImageMessageBody) messages.get(x).getBody();
+              obtain.obj = body;
+              handler.sendMessage(obtain);
+
+
+
+          }
+
+
+
+
                  }
             }
         }
@@ -537,11 +597,15 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
      chatlist_photo.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-      //跳转到相机
-
-
-
-         }
+             //跳转到相机
+                 try {
+                     Intent intentNow = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                     intentNow.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(SDCardUtils.getMyFaceFile(createLocalPhotoName())));
+                     startActivityForResult(intentNow, INTENTFORCAMERA);
+                 } catch (Exception e) {
+                     e.printStackTrace();
+                 }
+             }
      });
       chatlist_album.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -703,6 +767,8 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                          message.what = 1;
                          message.obj = txtBody;
                          handler.sendMessage(message);
+                         EMConversation emConversation = EMClient.getInstance().chatManager().getConversation(userid);
+                         emConversation.appendMessage(messages.get(0));
 
                      }else if(type.equals(EMMessage.Type.VOICE)){
                              EMVoiceMessageBody voiceMessageBody= (EMVoiceMessageBody) messages.get(0).getBody();
@@ -710,13 +776,27 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                             obtain.what=4;
                             obtain.obj=voiceMessageBody;
                            handler.sendMessage(obtain);
+                         EMConversation emConversation = EMClient.getInstance().chatManager().getConversation(userid);
+                         emConversation.appendMessage(messages.get(0));
 
+
+                     }else if(type.equals(EMMessage.Type.IMAGE)){
+                      EMImageMessageBody imageMessageBody= (EMImageMessageBody) messages.get(0).getBody();
+
+
+
+                        Message message=Message.obtain();
+                         message.what=8;
+                         message.obj=imageMessageBody;
+                          handler.sendMessage(message);
+
+                         EMConversation emConversation = EMClient.getInstance().chatManager().getConversation(userid);
+                         emConversation.appendMessage(messages.get(0));
 
                      }
 
 
-                    EMConversation emConversation = EMClient.getInstance().chatManager().getConversation(userid);
-                    emConversation.appendMessage(messages.get(0));
+
                 }
             }
 
@@ -842,6 +922,17 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
         map.put("flag","2");
         chatList.add(map);
     }
+ protected void addPhotoToList(String text,String imagecontext,int who){
+     HashMap<String,Object>map = new HashMap<String,Object>();
+      map.put("person",who);
+     map.put("image", who == ME ? imageforme : imageforother);
+     map.put("imagecontext",imagecontext);
+     map.put("flag","3");
+     chatList.add(map);
+
+              }
+
+
 
 
 
@@ -979,6 +1070,197 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
 
         buttomLayoutView.addView(emojiconMenu);
     }
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case INTENTFORPHOTO:
+                //相册
+
+                try {
+                    // 必须这样处理，不然在4.4.2手机上会出问题
+                    Uri originalUri = data.getData();
+                    File f = null;
+                    if (originalUri != null) {
+                        f = new File(SDCardUtils.photoCacheDir, LocalPhotoName);
+                        String[] proj = {MediaStore.Images.Media.DATA};
+                        Cursor actualimagecursor =  this.getContentResolver().query(originalUri, proj, null, null, null);
+                        if (null == actualimagecursor) {
+                            if (originalUri.toString().startsWith("file:")) {
+                                File file = new File(originalUri.toString().substring(7, originalUri.toString().length()));
+                                if(!file.exists()){
+                                    //地址包含中文编码的地址做utf-8编码
+                                    originalUri = Uri.parse(URLDecoder.decode(originalUri.toString(),"UTF-8"));
+                                    file = new File(originalUri.toString().substring(7, originalUri.toString().length()));
+                                }
+                                FileInputStream inputStream = new FileInputStream(file);
+                                FileOutputStream outputStream = new FileOutputStream(f);
+                                copyStream(inputStream, outputStream);
+                            }
+                        } else {
+                            // 系统图库
+                            int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                            actualimagecursor.moveToFirst();
+                            String img_path = actualimagecursor.getString(actual_image_column_index);
+                            if (img_path == null) {
+                                InputStream inputStream = this.getContentResolver().openInputStream(originalUri);
+                                FileOutputStream outputStream = new FileOutputStream(f);
+                                copyStream(inputStream, outputStream);
+                            } else {
+                                File file = new File(img_path);
+                                FileInputStream inputStream = new FileInputStream(file);
+                                FileOutputStream outputStream = new FileOutputStream(f);
+                                copyStream(inputStream, outputStream);
+                            }
+
+                        }
+                        Bitmap bitmap = ImageResizeUtils.resizeImage(f.getAbsolutePath(), Constants.RESIZE_PIC);
+                        FileOutputStream fos = new FileOutputStream(f.getAbsolutePath());
+                        if (bitmap != null) {
+                            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos)) {
+                                fos.close();
+                                fos.flush();
+                            }
+
+                            uploadFile(f,bitmap);
+                            if (!bitmap.isRecycled()) {
+                                bitmap.isRecycled();
+                            }
+
+
+
+                        }
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+
+
+                break;
+            case INTENTFORCAMERA:
+//   相机
+                try {
+
+                    //file 就是拍照完 得到的原始照片
+                    File file = new File(SDCardUtils.photoCacheDir, LocalPhotoName);
+                    Bitmap bitmap = ImageResizeUtils.resizeImage(file.getAbsolutePath(), Constants.RESIZE_PIC);
+                    FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+                    if (bitmap != null) {
+                        if (bitmap.compress(Bitmap.CompressFormat.JPEG, 85, fos)) {
+                            fos.close();
+                            fos.flush();
+                        }
+
+                        uploadFile(file,bitmap);
+                        if (!bitmap.isRecycled()) {
+                            //通知系统 回收bitmap
+                            bitmap.isRecycled();
+                        }
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
+    public static void copyStream(InputStream inputStream, OutputStream outStream) throws Exception {
+        try {
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = inputStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, len);
+            }
+            outStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(inputStream != null){
+                inputStream.close();
+            }
+            if(outStream != null){
+                outStream.close();
+            }
+        }
+
+    }
+
+    public void uploadFile(final File file,Bitmap bitmap){
+     /*   //imagePath为图片本地路径，false为不发送原图（默认超过100k的图片会压缩后发给对方），需要发送原图传true
+
+//如果是群聊，设置chattype，默认是单聊
+        if (chatType == CHATTYPE_GROUP)
+            message.setChatType(ChatType.GroupChat);
+        EMClient.getInstance().chatManager().sendMessage(message);*/
+
+        if(!file.exists()){
+            MyToast.makeText(this," 照片不存在",Toast.LENGTH_SHORT);
+            return;
+        }
+        EMMessage message = EMMessage.createImageSendMessage(file + "", true, userid);
+
+        EMClient.getInstance().chatManager().sendMessage(message);
+    message.setMessageStatusCallback(new EMCallBack() {
+        @Override
+        public void onSuccess() {
+
+
+        MyToast.makeText(ChatActivity.this,file+"",Toast.LENGTH_SHORT);
+        addPhotoToList("",file+"",ME);
+
+           runOnUiThread(new Runnable() {
+               @Override
+               public void run() {
+                   adapter.notifyDataSetChanged();
+                   chatListView.setSelection(chatList.size() - 1);
+               }
+           });
+
+
+
+
+        }
+
+        @Override
+        public void onError(int code, String error) {
+
+
+
+        }
+
+        @Override
+        public void onProgress(int progress, String status) {
+
+
+
+        }
+    });
+
+
+
+
+
+
+//        key = value   addFormDataPart file 00101010110 key = value
+//        key = value
+//
+//         file 00101010110
+//        key = value
+
+
+
+
+    }
+
+
 
 
 }

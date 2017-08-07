@@ -16,5 +16,6 @@ public static final String LOGIN_ACTION = "http://qhb.2dyt.com/MyInterface/userA
    public static final  String  USER_INFO="http://qhb.2dyt.com/MyInterface/userAction_selectUserById.action";
     public static final  String ADD_FRIEND= "http://qhb.2dyt.com/MyInterface/userAction_addFriends.action";
   public static final  String  FRIEND_LINEAR=  "http://qhb.2dyt.com/MyInterface/userAction_selectAllUserAndFriend.action";
-
+  //微信朋友圈
+   public static final String FRIEND_QUANG="http://qhb.2dyt.com/MyInterface/userAction_selectFriends.action";
 }

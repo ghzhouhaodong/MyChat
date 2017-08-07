@@ -1,6 +1,8 @@
 package com.zhd.lenovo.mychat.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.text.Spannable;
 import android.view.LayoutInflater;
@@ -24,14 +26,20 @@ public  class MyChatAdapter extends BaseAdapter {
     public final static int ME = 0;
     public static final int VALUE_TXT = 0;
     public static final int VALUE_VOICE = 1;
+    public static final int VALUE_PHOTO=2;
+
     Context context = null;
         ArrayList<HashMap<String, Object>> chatList = null;
         int[] layout;
         String[] from;
         int[] to;
     int [] tovoice={R.id.chatlist_voicehead_me,R.id.chatlist_voice_time_me,R.id.chatlist_voicehead__other,R.id.chatlist_voice_time_other};
+    int [] tophoto={R.id.chatlist_photohead_me,R.id.chatlist_photo_me,R.id.chatlist_photohead__other,R.id.chatlist_photo_other};
      int [] todonghua={R.id.chatlist_voice_me,R.id.chatlist_voice_other};
     int[] layoutvoice = {R.layout.chatlist_voice_for_me,R.layout.chatlist_voice_for_you};
+    int[] layoutphoto = {R.layout.chatlist_photo_for_me,R.layout.chatlist_photo_for_you};
+
+
     public MyChatAdapter(Context context,
                              ArrayList<HashMap<String, Object>> chatList, int[] layout,
                              String[] from, int[] to) {
@@ -65,8 +73,11 @@ public  class MyChatAdapter extends BaseAdapter {
    }else if(chatList.get(position).get("flag").equals("2")){
 
        return VALUE_VOICE;
+   }else{
+
+       return VALUE_PHOTO;
    }
-        return 0;
+
 
         }
  //返回两种类型
@@ -74,7 +85,7 @@ public  class MyChatAdapter extends BaseAdapter {
     public int getViewTypeCount() {
 
 
-        return 2;
+        return 3;
     }
 
     @Override
@@ -94,7 +105,12 @@ public  class MyChatAdapter extends BaseAdapter {
         public TextView  time=null;
 
        }
+    class PhotoViewHolder{
+    public  ImageView imageHead =null;
+      public ImageView imagecontext =null;
 
+
+    }
 
 
         @Override
@@ -132,11 +148,6 @@ public  class MyChatAdapter extends BaseAdapter {
 
                     holder.textView.setText(span, TextView.BufferType.SPANNABLE);
                 }
-
-
-
-
-
 
 
 
@@ -182,14 +193,31 @@ public  class MyChatAdapter extends BaseAdapter {
                     }
                });
 
-
-
-
-
-
                 break;
-        }
+            case VALUE_PHOTO:
+            PhotoViewHolder holder3 =null;
+                //获得到消息是谁发的
+                int who3 = (Integer) chatList.get(position).get("person");
+                //加载who的布局
+                convertView = LayoutInflater.from(context).inflate(
+                        layoutphoto[who3 == ME ? 0 : 1], null);
 
+                holder3 =new PhotoViewHolder();
+                holder3.imageHead = (ImageView) convertView.findViewById(tophoto[who3 * 2 + 0]);
+                holder3.imagecontext = (ImageView) convertView.findViewById(tophoto[who3 * 2 + 1]);
+               String  image= (String) chatList.get(position).get("imagecontext");
+
+           Glide.with(context).load((String) chatList.get(position).get(from[0])).into(holder3.imageHead);
+                System.out.println("image = " + image);
+        //   Glide.with(context).load("/storage/emulated/0/Android/data/com.zhd.lenovo.mychat/1131170609115540#dliao/files/55/45/e4e090b0-75cc-11e7-870c-17241d3ac866.jpg").into(holder3.imagecontext);
+                 Bitmap bitmap= BitmapFactory.decodeFile(image);
+                holder3.imagecontext.setImageBitmap(bitmap);
+
+
+    break;
+
+
+        }
 
             return convertView;
         }

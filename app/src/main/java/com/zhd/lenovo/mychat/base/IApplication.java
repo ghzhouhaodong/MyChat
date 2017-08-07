@@ -10,6 +10,8 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.mob.MobApplication;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.zhd.lenovo.mychat.R;
@@ -32,7 +34,7 @@ public class IApplication extends MobApplication {
         super.onCreate();
         application = this;
         Fresco.initialize(this);
-
+      initImageLoader();
         //加载so文件库
         System.loadLibrary("core");
         System.loadLibrary("speex");
@@ -78,7 +80,11 @@ public class IApplication extends MobApplication {
 //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         EMClient.getInstance().setDebugMode(true);
     }
+    private void initImageLoader() {
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(this);
+        ImageLoader.getInstance().init(configuration);
 
+    }
 
     public static IApplication getApplication(){
         if(application == null){

@@ -2,6 +2,8 @@ package com.zhd.lenovo.mychat.network;
 
 import com.socks.library.KLog;
 
+import java.io.IOException;
+
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
@@ -27,7 +29,11 @@ public abstract  class BaseObserver implements Observer<String> {
 
         KLog.i(s);
 
-        onSuccess(s);
+        try {
+            onSuccess(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -47,7 +53,7 @@ public abstract  class BaseObserver implements Observer<String> {
     }
 
 
-    public abstract void onSuccess(String result);
+    public abstract void onSuccess(String result) throws IOException;
     public abstract void onFailed(int code);
 
 }

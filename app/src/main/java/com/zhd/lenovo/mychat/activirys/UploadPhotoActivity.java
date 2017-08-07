@@ -324,9 +324,9 @@ public class UploadPhotoActivity extends IActivity {
 
 
                     }
-                    AppManager.getAppManager().finishActivity(UploadPhotoActivity.class);
-                    startActivity(new Intent(UploadPhotoActivity.this,TabActivity.class));
 
+                    startActivity(new Intent(UploadPhotoActivity.this,TabActivity.class));
+                    AppManager.getAppManager().finishActivity(UploadPhotoActivity.class);
 
 
                 } catch (Exception e1) {
