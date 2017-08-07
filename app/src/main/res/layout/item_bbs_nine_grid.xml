@@ -32,7 +32,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
            android:id="@+id/thired_friend_more"
-           android:text="...查看全文"
+           android:text="查看全文"
          android:textColor="#3370C4"
           android:visibility="gone"
           />
