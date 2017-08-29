@@ -20,9 +20,9 @@ public LoginActivityModelImpl loginActivityModel;
  }
    public void setLoginView(String username,String password){
       if(TextUtils.isEmpty(username)){
-         loginView.usernameEmpty();
-         return;
-      }
+           loginView.usernameEmpty();
+           return;
+       }
      if(TextUtils.isEmpty(password)){
          loginView.passwordEmpty();
          return;

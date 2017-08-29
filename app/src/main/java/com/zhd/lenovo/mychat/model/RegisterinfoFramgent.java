@@ -14,7 +14,6 @@ public interface RegisterinfoFramgent {
 
           public void onFailed(int code);
 
-
        }
 
 

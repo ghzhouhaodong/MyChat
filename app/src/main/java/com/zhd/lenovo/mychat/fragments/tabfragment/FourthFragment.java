@@ -11,12 +11,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.zhd.lenovo.mychat.R;
+import com.zhd.lenovo.mychat.activirys.SWCameraStreamingActivity;
+import com.zhd.lenovo.mychat.activirys.ShowListActivity;
 import com.zhd.lenovo.mychat.activirys.UploadPhotoAlbumActivity;
 import com.zhd.lenovo.mychat.base.IApplication;
+import com.zhd.lenovo.mychat.bean.zhubobean;
+import com.zhd.lenovo.mychat.network.BaseObserver;
+import com.zhd.lenovo.mychat.network.RetrofitManager;
 import com.zhd.lenovo.mychat.network.cookie.CookiesManager;
+import com.zhd.lenovo.mychat.utils.Constants;
 import com.zhd.lenovo.mychat.utils.PreferencesUtils;
 import com.zhd.lenovo.mychat.widget.MyToast;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,22 +99,46 @@ public class FourthFragment extends Fragment {
 
                 boolean b = new CookiesManager(IApplication.application).removeAllCookie();
                 if (b) {
-                    PreferencesUtils.addConfigInfo(getActivity(), "islogin", false);
-                    MyToast.makeText(IApplication.getApplication(), "退出登录", Toast.LENGTH_SHORT);
+                PreferencesUtils.addConfigInfo(getActivity(), "islogin", false);
+                MyToast.makeText(IApplication.getApplication(), "退出登录", Toast.LENGTH_SHORT);
 
-                }
+            }
 
 
                 break;
             case R.id.Fourth_show:
+
+                Map<String,String>map = new HashMap<String, String>();
+              //  ?user.sign=1&live.type=1
+                map.put("live.type","1");
+                RetrofitManager.post(Constants.ZHIBO, map, new BaseObserver() {
+                    @Override
+                    public void onSuccess(String result) throws IOException {
+                        System.out.println("zhiboresult = " + result);
+                        Gson gson=new Gson();
+                       zhubobean zhubo=   gson.fromJson(result, zhubobean.class);
+                        Intent intent = new Intent(getActivity(),SWCameraStreamingActivity.class);
+                       intent.putExtra("stream_json_str",zhubo.getUrl());
+                       startActivity(intent);
+
+
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+
+                    }
+                });
 
 
 
 
                 break;
             case R.id.Fourth_watch:
+      startActivity(new Intent(getActivity(), ShowListActivity.class));
 
-
+             /*   publishUrl : rtmp://pili-publish.2dyt.com/1503d/m15jQIaW?e=1502118726&token=tYBGEzG7NE_D23EScw43ZTxynVkyt1IpHig5WHRY:B1wRfRiDKPmf-hD8eGE_sn7kR_8=
+         * playUrl : rtmp://pili-live-rtmp.2dyt.com/1503d/m15jQIaW*/
                 break;
 
 

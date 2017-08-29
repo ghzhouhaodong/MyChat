@@ -12,6 +12,7 @@ import com.hyphenate.chat.EMOptions;
 import com.mob.MobApplication;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.qiniu.pili.droid.streaming.StreamingEnv;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.zhd.lenovo.mychat.R;
@@ -35,6 +36,8 @@ public class IApplication extends MobApplication {
         application = this;
         Fresco.initialize(this);
       initImageLoader();
+        //七牛
+        StreamingEnv.init(getApplicationContext());
         //加载so文件库
         System.loadLibrary("core");
         System.loadLibrary("speex");

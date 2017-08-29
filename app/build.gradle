@@ -37,7 +37,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //移除无用的resource文件
-         //   shrinkResources true
+            //   shrinkResources true
 
 
         }
@@ -69,6 +69,7 @@ dependencies {
     // add library
     compile project(':library')
     compile project(':easeui')
+
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
     compile 'com.github.385841539:HorizontalScrollSelectedView:1.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -96,6 +97,7 @@ dependencies {
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
     compile 'com.facebook.fresco:fresco:1.3.0'
     compile 'com.hyphenate:hyphenate-sdk:3.3.2'
+    compile 'com.qiniu:happy-dns:0.2.8'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'

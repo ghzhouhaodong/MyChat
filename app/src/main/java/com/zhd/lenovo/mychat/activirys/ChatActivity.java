@@ -202,10 +202,6 @@ public class ChatActivity extends IActivity implements OnKeyBoardStatusChangeLis
                 MyToast.makeText(ChatActivity.this,"url"+url,Toast.LENGTH_LONG);
 
                 addPhotoToList("text",localUrl,OTHER);
-
-
-
-
             }
 
 

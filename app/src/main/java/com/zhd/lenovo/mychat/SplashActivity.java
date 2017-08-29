@@ -21,7 +21,6 @@ import com.amap.api.location.AMapLocationListener;
 import com.zhd.lenovo.mychat.activirys.LoginActivity;
 import com.zhd.lenovo.mychat.activirys.RegisterActivity;
 import com.zhd.lenovo.mychat.activirys.TabActivity;
-import com.zhd.lenovo.mychat.base.AppManager;
 import com.zhd.lenovo.mychat.base.IApplication;
 import com.zhd.lenovo.mychat.utils.PreferencesUtils;
 
@@ -173,7 +172,7 @@ public void showRationaleForCamera(final PermissionRequest request){
     protected void onDestroy() {
         super.onDestroy();
         mLocationClient.onDestroy();//销毁定位客户端，同时销毁本地定位服务。
-        AppManager.getAppManager().finishActivity(this);
+       // AppManager.getAppManager().finishActivity(this);
 
     }
 

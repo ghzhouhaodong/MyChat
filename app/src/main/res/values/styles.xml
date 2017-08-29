@@ -6,6 +6,14 @@
         <item name="android:fitsSystemWindows">true</item>
 
     </style>
+<!--  <style name="Appwelcome"
+   parent="android:Theme.Translucent.NoTitleBar.Fullscreen"/>-->
+
+    <style name="Appwelcome" parent="android:Theme.Translucent.NoTitleBar.Fullscreen">
+        <item name="android:windowBackground">@drawable/welcome_bg</item>
+    </style>
+
+
 
     <style name="TabAppTheme" parent="android:Theme.Holo.Light.NoActionBar">
         <!-- Customize your theme here. -->

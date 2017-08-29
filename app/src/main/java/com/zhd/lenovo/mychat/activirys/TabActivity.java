@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 
 import com.hyphenate.chat.EMClient;
 import com.zhd.lenovo.mychat.R;
@@ -124,4 +125,16 @@ public class TabActivity extends IActivity implements ButtomLayout.OnSelectListe
         appManager.finishActivity(this);
         unregisterReceiver(callReceiver);
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(false);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
+
 }
